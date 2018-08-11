@@ -1,3 +1,4 @@
+import 'package:bmi_calculator/gender_card.dart';
 import 'package:flutter/material.dart';
 
 class InputPage extends StatefulWidget {
@@ -43,13 +44,7 @@ class _InputPageState extends State<InputPage> {
               child: Column(
                 children: <Widget>[
                   Expanded(
-                    child: Card(
-                      elevation: 1.0,
-                      child: Container(
-                        width: double.infinity,
-                        child: Text("Gender"),
-                      ),
-                    ),
+                    child: GenderCard()
                   ),
                   Expanded(
                     child: Card(
