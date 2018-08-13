@@ -10,4 +10,4 @@ build/
 
 *.iml
 .idea/
-res/values/strings_en.arb
+res/
