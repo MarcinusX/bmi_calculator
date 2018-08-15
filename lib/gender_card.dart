@@ -10,10 +10,10 @@ class GenderCard extends StatefulWidget {
   _GenderCardState createState() => _GenderCardState();
 }
 
+const double _defaultGenderAngle = math.pi / 4;
+
 class _GenderCardState extends State<GenderCard> {
   static final double _circleSize = 80.0;
-  static final double _arrowLength = 32.0;
-  static final double _defaultGenderAngle = 45.0;
   static final Map<Gender, double> _genderAngles = {
     Gender.female: -_defaultGenderAngle,
     Gender.other: 0.0,
@@ -30,27 +30,23 @@ class _GenderCardState extends State<GenderCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Container(
-        width: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              CardTitle("GENDER"),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: _drawMainStack(),
-              ),
-            ],
-          ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            CardTitle("GENDER"),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: _drawMainStack(),
+            ),
+          ],
         ),
       ),
     );
   }
 
   Widget _drawGenderIcon(Gender gender) {
-    double angleInRadians = _degreeToRadians(_genderAngles[gender]);
     String assetName = _genderImages[gender];
     double iconSize = gender == Gender.other ? 22.0 : 16.0;
     double genderLeftPadding = gender == Gender.other ? 8.0 : 0.0;
@@ -58,14 +54,14 @@ class _GenderCardState extends State<GenderCard> {
       padding: EdgeInsets.only(bottom: _circleSize / 2),
       child: Transform.rotate(
         alignment: Alignment.bottomCenter,
-        angle: angleInRadians,
+        angle: _genderAngles[gender],
         child: Padding(
           padding: EdgeInsets.only(bottom: _circleSize / 2),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Transform.rotate(
-                angle: -angleInRadians,
+                angle: -_genderAngles[gender],
                 child: Padding(
                   padding: EdgeInsets.only(left: genderLeftPadding),
                   child: SvgPicture.asset(
@@ -84,14 +80,18 @@ class _GenderCardState extends State<GenderCard> {
   }
 
   Widget _drawMainStack() {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: <Widget>[
-        _drawCircleIndicator(),
-        _drawGenderIcon(Gender.female),
-        _drawGenderIcon(Gender.other),
-        _drawGenderIcon(Gender.male),
-      ],
+    return SizedBox(
+      width: double.infinity,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: <Widget>[
+          _drawCircleIndicator(),
+          _drawGenderIcon(Gender.female),
+          _drawGenderIcon(Gender.other),
+          _drawGenderIcon(Gender.male),
+          _drawGestureDetector(),
+        ],
+      ),
     );
   }
 
@@ -100,7 +100,7 @@ class _GenderCardState extends State<GenderCard> {
       alignment: Alignment.center,
       children: <Widget>[
         _drawCircle(),
-        _drawRotatedArrow(angle: _genderAngles[selectedGender]),
+        GenderArrow(angle: _genderAngles[selectedGender]),
       ],
     );
   }
@@ -116,36 +116,61 @@ class _GenderCardState extends State<GenderCard> {
     );
   }
 
-  Widget _drawRotatedArrow({double angle}) {
-    //we need to move arrow up for ~50% of its size since now it the middle of he arrow is in the middle of the circle;
-    double translationOffset = -_arrowLength * 0.5;
-    //we want to have the "pin" of the arrow in the middle, not the bottom of it, so we need to move it a bit down and adjust rotation alignment
-    double adjustmentOffset = 0.1;
-    translationOffset += adjustmentOffset * _arrowLength;
+  _drawGestureDetector() {
+    return Positioned.fill(
+      child: TapHandler(
+        onGenderTapped: (gender) => setState(() => selectedGender = gender),
+      ),
+    );
+  }
+}
 
+class GenderArrow extends StatelessWidget {
+  static final double _arrowLength = 32.0;
+  static final double _translationOffset = _arrowLength * -0.4;
+
+  final double angle;
+
+  const GenderArrow({Key key, this.angle = 0.0}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Transform.rotate(
-      angle: _degreeToRadians(angle),
+      angle: angle,
       alignment: Alignment(0.0, 0.0),
       child: Transform.translate(
-        offset: Offset(0.0, translationOffset),
-        child: _drawArrow(),
+        offset: Offset(0.0, _translationOffset),
+        child: Transform.rotate(
+          angle: -_defaultGenderAngle,
+          child: SvgPicture.asset(
+            "images/gender_arrow.svg",
+            height: _arrowLength,
+            width: _arrowLength,
+          ),
+        ),
       ),
     );
   }
+}
 
-  Widget _drawArrow() {
-    return Transform.rotate(
-      angle: _degreeToRadians(-_defaultGenderAngle),
-      child: SvgPicture.asset(
-        "images/gender_arrow.svg",
-        height: _arrowLength,
-        width: _arrowLength,
-      ),
+class TapHandler extends StatelessWidget {
+  final Function(Gender) onGenderTapped;
+
+  const TapHandler({Key key, this.onGenderTapped}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Expanded(
+            child: GestureDetector(onTap: () => onGenderTapped(Gender.female))),
+        Expanded(
+            child: GestureDetector(onTap: () => onGenderTapped(Gender.other))),
+        Expanded(
+            child: GestureDetector(onTap: () => onGenderTapped(Gender.male))),
+      ],
     );
-  }
-
-  double _degreeToRadians(double angle) {
-    return angle * math.pi / 180;
   }
 }
 
