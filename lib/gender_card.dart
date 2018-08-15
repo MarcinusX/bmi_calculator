@@ -25,6 +25,8 @@ class _GenderCardState extends State<GenderCard> {
     Gender.male: "images/gender_male.svg",
   };
 
+  Gender selectedGender = Gender.female;
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -51,20 +53,30 @@ class _GenderCardState extends State<GenderCard> {
     double angleInRadians = _degreeToRadians(_genderAngles[gender]);
     String assetName = _genderImages[gender];
     double iconSize = gender == Gender.other ? 22.0 : 16.0;
+    double genderLeftPadding = gender == Gender.other ? 8.0 : 0.0;
     return Padding(
       padding: EdgeInsets.only(bottom: _circleSize / 2),
       child: Transform.rotate(
         alignment: Alignment.bottomCenter,
         angle: angleInRadians,
         child: Padding(
-          padding: EdgeInsets.only(bottom: _circleSize / 2 + 24.0),
-          child: Transform.rotate(
-            angle: -angleInRadians,
-            child: SvgPicture.asset(
-              assetName,
-              height: iconSize,
-              width: iconSize,
-            ),
+          padding: EdgeInsets.only(bottom: _circleSize / 2),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Transform.rotate(
+                angle: -angleInRadians,
+                child: Padding(
+                  padding: EdgeInsets.only(left: genderLeftPadding),
+                  child: SvgPicture.asset(
+                    assetName,
+                    height: iconSize,
+                    width: iconSize,
+                  ),
+                ),
+              ),
+              GenderLine(),
+            ],
           ),
         ),
       ),
@@ -88,7 +100,7 @@ class _GenderCardState extends State<GenderCard> {
       alignment: Alignment.center,
       children: <Widget>[
         _drawCircle(),
-        _drawRotatedArrow(angle: _genderAngles[Gender.male]),
+        _drawRotatedArrow(angle: _genderAngles[selectedGender]),
       ],
     );
   }
@@ -134,5 +146,19 @@ class _GenderCardState extends State<GenderCard> {
 
   double _degreeToRadians(double angle) {
     return angle * math.pi / 180;
+  }
+}
+
+class GenderLine extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6.0, top: 8.0),
+      child: Container(
+        height: 8.0,
+        width: 1.0,
+        color: Color.fromRGBO(216, 217, 223, 0.36),
+      ),
+    );
   }
 }
