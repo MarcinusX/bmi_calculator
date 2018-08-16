@@ -12,7 +12,8 @@ class GenderCard extends StatefulWidget {
 
 const double _defaultGenderAngle = math.pi / 4;
 
-class _GenderCardState extends State<GenderCard> {
+class _GenderCardState extends State<GenderCard>
+    with SingleTickerProviderStateMixin {
   static final double _circleSize = 80.0;
   static final Map<Gender, double> _genderAngles = {
     Gender.female: -_defaultGenderAngle,
@@ -25,7 +26,31 @@ class _GenderCardState extends State<GenderCard> {
     Gender.male: "images/gender_male.svg",
   };
 
+  AnimationController _arrowAnimationController;
   Gender selectedGender = Gender.female;
+
+  @override
+  void initState() {
+    _arrowAnimationController = new AnimationController(
+      vsync: this,
+      lowerBound: -_defaultGenderAngle,
+      upperBound: _defaultGenderAngle,
+      value: _genderAngles[selectedGender],
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _arrowAnimationController.dispose();
+    super.dispose();
+  }
+
+  void _setSelectedGender(Gender gender) {
+    setState(() => selectedGender = gender);
+    _arrowAnimationController.animateTo(_genderAngles[gender],
+        duration: Duration(milliseconds: 150));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +125,11 @@ class _GenderCardState extends State<GenderCard> {
       alignment: Alignment.center,
       children: <Widget>[
         _drawCircle(),
-        GenderArrow(angle: _genderAngles[selectedGender]),
+        AnimatedBuilder(
+          builder: (context, child) =>
+              GenderArrow(angle: _arrowAnimationController.value),
+          animation: _arrowAnimationController,
+        )
       ],
     );
   }
@@ -119,7 +148,7 @@ class _GenderCardState extends State<GenderCard> {
   _drawGestureDetector() {
     return Positioned.fill(
       child: TapHandler(
-        onGenderTapped: (gender) => setState(() => selectedGender = gender),
+        onGenderTapped: _setSelectedGender,
       ),
     );
   }
