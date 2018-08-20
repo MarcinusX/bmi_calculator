@@ -5,6 +5,8 @@ import 'package:bmi_calculator/gender.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'widget_utils.dart' show screenAwareSize;
+
 class GenderCard extends StatefulWidget {
   final Gender initialGender;
 
@@ -20,7 +22,8 @@ const Map<Gender, double> _genderAngles = {
   Gender.other: 0.0,
   Gender.male: _defaultGenderAngle,
 };
-const double _circleSize = 80.0;
+
+double _circleSize(BuildContext context) => screenAwareSize(80.0, context);
 
 class _GenderCardState extends State<GenderCard>
     with SingleTickerProviderStateMixin {
@@ -49,13 +52,13 @@ class _GenderCardState extends State<GenderCard>
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.only(top: 8.0),
+        padding: EdgeInsets.only(top: screenAwareSize(8.0, context)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             CardTitle("GENDER"),
             Padding(
-              padding: const EdgeInsets.only(top: 16.0),
+              padding: EdgeInsets.only(top: screenAwareSize(16.0, context)),
               child: _drawMainStack(),
             ),
           ],
@@ -120,18 +123,22 @@ class GenderIconTranslated extends StatelessWidget {
 
   String get _assetName => _genderImages[gender];
 
-  double get _iconSize => _isOtherGender ? 22.0 : 16.0;
+  double _iconSize(BuildContext context) {
+    return screenAwareSize(_isOtherGender ? 22.0 : 16.0, context);
+  }
 
-  double get _genderLeftPadding => _isOtherGender ? 8.0 : 0.0;
+  double _genderLeftPadding(BuildContext context) {
+    return screenAwareSize(_isOtherGender ? 8.0 : 0.0, context);
+  }
 
   @override
   Widget build(BuildContext context) {
     Widget icon = Padding(
-      padding: EdgeInsets.only(left: _genderLeftPadding),
+      padding: EdgeInsets.only(left: _genderLeftPadding(context)),
       child: SvgPicture.asset(
         _assetName,
-        height: _iconSize,
-        width: _iconSize,
+        height: _iconSize(context),
+        width: _iconSize(context),
       ),
     );
 
@@ -141,7 +148,7 @@ class GenderIconTranslated extends StatelessWidget {
     );
 
     Widget iconWithALine = Padding(
-      padding: EdgeInsets.only(bottom: _circleSize / 2),
+      padding: EdgeInsets.only(bottom: _circleSize(context) / 2),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -158,7 +165,7 @@ class GenderIconTranslated extends StatelessWidget {
     );
 
     Widget centeredIconWithALine = Padding(
-      padding: EdgeInsets.only(bottom: _circleSize / 2),
+      padding: EdgeInsets.only(bottom: _circleSize(context) / 2),
       child: rotatedIconWithALine,
     );
 
@@ -167,8 +174,10 @@ class GenderIconTranslated extends StatelessWidget {
 }
 
 class GenderArrow extends AnimatedWidget {
-  static final double _arrowLength = 32.0;
-  static final double _translationOffset = _arrowLength * -0.4;
+  double _arrowLength(BuildContext context) => screenAwareSize(32.0, context);
+
+  double _translationOffset(BuildContext context) =>
+      _arrowLength(context) * -0.4;
 
   const GenderArrow({Key key, Listenable listenable})
       : super(key: key, listenable: listenable);
@@ -180,13 +189,13 @@ class GenderArrow extends AnimatedWidget {
       angle: animation.value,
       alignment: Alignment(0.0, 0.0),
       child: Transform.translate(
-        offset: Offset(0.0, _translationOffset),
+        offset: Offset(0.0, _translationOffset(context)),
         child: Transform.rotate(
           angle: -_defaultGenderAngle,
           child: SvgPicture.asset(
             "images/gender_arrow.svg",
-            height: _arrowLength,
-            width: _arrowLength,
+            height: _arrowLength(context),
+            width: _arrowLength(context),
           ),
         ),
       ),
@@ -219,8 +228,8 @@ class GenderCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: _circleSize,
-      height: _circleSize,
+      width: _circleSize(context),
+      height: _circleSize(context),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Color.fromRGBO(244, 244, 244, 1.0),
@@ -233,9 +242,12 @@ class GenderLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 6.0, top: 8.0),
+      padding: EdgeInsets.only(
+        bottom: screenAwareSize(6.0, context),
+        top: screenAwareSize(8.0, context),
+      ),
       child: Container(
-        height: 8.0,
+        height: screenAwareSize(8.0, context),
         width: 1.0,
         color: Color.fromRGBO(216, 217, 223, 0.36),
       ),
