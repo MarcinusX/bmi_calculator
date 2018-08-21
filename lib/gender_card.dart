@@ -68,7 +68,7 @@ class _GenderCardState extends State<GenderCard>
   }
 
   Widget _drawMainStack() {
-    return SizedBox(
+    return Container(
       width: double.infinity,
       child: Stack(
         alignment: Alignment.bottomCenter,
@@ -103,8 +103,10 @@ class _GenderCardState extends State<GenderCard>
 
   void _setSelectedGender(Gender gender) {
     setState(() => selectedGender = gender);
-    _arrowAnimationController.animateTo(_genderAngles[gender],
-        duration: Duration(milliseconds: 150));
+    _arrowAnimationController.animateTo(
+      _genderAngles[gender],
+      duration: Duration(milliseconds: 150),
+    );
   }
 }
 
@@ -174,20 +176,19 @@ class GenderIconTranslated extends StatelessWidget {
 }
 
 class GenderArrow extends AnimatedWidget {
+  const GenderArrow({Key key, Listenable listenable})
+      : super(key: key, listenable: listenable);
+
   double _arrowLength(BuildContext context) => screenAwareSize(32.0, context);
 
   double _translationOffset(BuildContext context) =>
       _arrowLength(context) * -0.4;
-
-  const GenderArrow({Key key, Listenable listenable})
-      : super(key: key, listenable: listenable);
 
   @override
   Widget build(BuildContext context) {
     Animation animation = listenable;
     return Transform.rotate(
       angle: animation.value,
-      alignment: Alignment(0.0, 0.0),
       child: Transform.translate(
         offset: Offset(0.0, _translationOffset(context)),
         child: Transform.rotate(
@@ -249,7 +250,7 @@ class GenderLine extends StatelessWidget {
       child: Container(
         height: screenAwareSize(8.0, context),
         width: 1.0,
-        color: Color.fromRGBO(216, 217, 223, 0.36),
+        color: Color.fromRGBO(216, 217, 223, 0.54),
       ),
     );
   }
