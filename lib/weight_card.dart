@@ -1,6 +1,7 @@
 import 'package:bmi_calculator/card_title.dart';
 import 'package:bmi_calculator/widget_utils.dart' show screenAwareSize;
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class WeightCard extends StatefulWidget {
   @override
@@ -12,14 +13,18 @@ class _WeightCardState extends State<WeightCard> {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.only(top: screenAwareSize(12.0, context)),
+        padding: EdgeInsets.only(top: screenAwareSize(30.0, context)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             CardTitle("WEIGHT", subTitle: "(KG)"),
-            Padding(
-              padding: EdgeInsets.only(top: screenAwareSize(16.0, context)),
-              child: _drawSlider(),
+            Expanded(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: _drawSlider(),
+                ),
+              ),
             ),
           ],
         ),
@@ -28,6 +33,34 @@ class _WeightCardState extends State<WeightCard> {
   }
 
   Widget _drawSlider() {
-    return Container();
+    return WeightBackground();
+  }
+}
+
+class WeightBackground extends StatelessWidget {
+  final Widget child;
+
+  const WeightBackground({Key key, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: <Widget>[
+        Container(
+          height: screenAwareSize(100.0, context),
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(244, 244, 244, 1.0),
+            borderRadius:
+                new BorderRadius.circular(screenAwareSize(50.0, context)),
+          ),
+        ),
+        SvgPicture.asset(
+          "images/weight_arrow.svg",
+          height: screenAwareSize(10.0, context),
+          width: screenAwareSize(18.0, context),
+        ),
+      ],
+    );
   }
 }

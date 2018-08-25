@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="18pt" height="9pt" viewBox="0 0 18 9" version="1.1">
+    <defs>
+        <clipPath id="clip1">
+            <path d="M 0.128906 8.726562 L 6.863281 1.167969 C 7.964844 -0.0703125 9.859375 -0.179688 11.097656 0.921875 C 11.195312 1.007812 11.285156 1.101562 11.371094 1.199219 L 17.875 8.726562 Z M 0.128906 8.726562 "/>
+        </clipPath>
+    </defs>
+    <g id="surface1">
+        <g clip-path="url(#clip1)" clip-rule="evenodd">
+            <rect x="0" y="0" width="18" height="9"
+                  style="fill:rgb(30.195618%,48.234558%,95.294189%);fill-opacity:1;stroke:none;"/>
+        </g>
+    </g>
+</svg>
