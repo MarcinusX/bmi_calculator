@@ -1,4 +1,5 @@
 import 'package:bmi_calculator/card_title.dart';
+import 'package:bmi_calculator/weight_slider.dart';
 import 'package:bmi_calculator/widget_utils.dart' show screenAwareSize;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,6 +10,8 @@ class WeightCard extends StatefulWidget {
 }
 
 class _WeightCardState extends State<WeightCard> {
+  int weight = 70;
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -33,7 +36,19 @@ class _WeightCardState extends State<WeightCard> {
   }
 
   Widget _drawSlider() {
-    return WeightBackground();
+    return WeightBackground(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return WeightSlider.integer(
+            value: weight,
+            minValue: 50,
+            maxValue: 80,
+            onChanged: (val) => setState(() => weight = val),
+            width: constraints.maxWidth,
+          );
+        },
+      ),
+    );
   }
 }
 
@@ -54,6 +69,7 @@ class WeightBackground extends StatelessWidget {
             borderRadius:
                 new BorderRadius.circular(screenAwareSize(50.0, context)),
           ),
+          child: child,
         ),
         SvgPicture.asset(
           "images/weight_arrow.svg",
