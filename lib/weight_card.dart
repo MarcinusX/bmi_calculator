@@ -39,10 +39,10 @@ class _WeightCardState extends State<WeightCard> {
     return WeightBackground(
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return WeightSlider.integer(
+          return WeightSlider(
             value: weight,
-            minValue: 50,
-            maxValue: 80,
+            minValue: 30,
+            maxValue: 100,
             onChanged: (val) => setState(() => weight = val),
             width: constraints.maxWidth,
           );
