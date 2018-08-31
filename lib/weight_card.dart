@@ -5,12 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class WeightCard extends StatefulWidget {
+  final int initialWeight;
+
+  const WeightCard({Key key, this.initialWeight}) : super(key: key);
+
   @override
   _WeightCardState createState() => _WeightCardState();
 }
 
 class _WeightCardState extends State<WeightCard> {
-  int weight = 70;
+  int weight;
+
+  @override
+  void initState() {
+    super.initState();
+    weight = widget.initialWeight ?? 70;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +34,7 @@ class _WeightCardState extends State<WeightCard> {
             Expanded(
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: screenAwareSize(16.0, context)),
                   child: _drawSlider(),
                 ),
               ),
@@ -40,9 +50,9 @@ class _WeightCardState extends State<WeightCard> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           return WeightSlider(
-            value: weight,
             minValue: 30,
-            maxValue: 100,
+            maxValue: 110,
+            value: weight,
             onChanged: (val) => setState(() => weight = val),
             width: constraints.maxWidth,
           );
