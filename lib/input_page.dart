@@ -7,8 +7,7 @@ import 'widget_utils.dart' show screenAwareSize;
 class InputPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: MediaQuery.of(context).padding,
+      body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
