@@ -1,8 +1,4 @@
-# bmi_calculator
+# BMI Calculator [![Build Status](https://travis-ci.org/MarcinusX/bmi_calculator.svg?branch=master)](https://travis-ci.org/MarcinusX/bmi_calculator)
 
-A new Flutter project.
-
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+Implementation of [Johny Vino](https://dribbble.com/johnyvino)'s [design](https://dribbble.com/shots/3558444-BMI-Calculator).
+![Design](https://cdn.dribbble.com/users/997070/screenshots/3558444/mock.gif)
