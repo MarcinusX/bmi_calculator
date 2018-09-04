@@ -34,7 +34,8 @@ class _WeightCardState extends State<WeightCard> {
             Expanded(
               child: Center(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenAwareSize(16.0, context)),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: screenAwareSize(16.0, context)),
                   child: _drawSlider(),
                 ),
               ),
@@ -49,13 +50,15 @@ class _WeightCardState extends State<WeightCard> {
     return WeightBackground(
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return WeightSlider(
-            minValue: 30,
-            maxValue: 110,
-            value: weight,
-            onChanged: (val) => setState(() => weight = val),
-            width: constraints.maxWidth,
-          );
+          return constraints.isTight
+              ? Container()
+              : WeightSlider(
+                  minValue: 30,
+                  maxValue: 110,
+                  value: weight,
+                  onChanged: (val) => setState(() => weight = val),
+                  width: constraints.maxWidth,
+                );
         },
       ),
     );
