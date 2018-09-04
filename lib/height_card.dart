@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:bmi_calculator/card_title.dart';
 import 'package:bmi_calculator/widget_utils.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +44,9 @@ class HeightCardState extends State<HeightCard> {
   }
 }
 
+const int minHeight = 145;
+const int maxHeight = 190;
+
 class HeightPicker extends StatelessWidget {
   final double widgetHeight;
   final int height;
@@ -60,7 +65,7 @@ class HeightPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     double sliderPosition = _sliderPosition(context);
     double personImageHeight =
-        sliderPosition + screenAwareSize(circleSize / 2, context);
+        sliderPosition + screenAwareSize(HeightPicker.circleSize / 2, context);
     return Stack(
       children: <Widget>[
         Align(
@@ -76,7 +81,7 @@ class HeightPicker extends StatelessWidget {
           child: _drawLabels(context),
         ),
         Positioned(
-          child: _drawSlider(),
+          child: _drawSlider(context),
           left: 0.0,
           right: 0.0,
           bottom: _sliderPosition(context),
@@ -86,19 +91,23 @@ class HeightPicker extends StatelessWidget {
   }
 
   double _sliderPosition(BuildContext context) {
+    return _pixelsPerUnit(context) * (height - minHeight);
+  }
+
+  double _pixelsPerUnit(BuildContext context) {
     double drawingHeight = widgetHeight -
-        screenAwareSize(bottomMargin + topMargin, context) -
-        fontSize;
-    double heightPerUnit = drawingHeight / totalUnits;
-    return heightPerUnit * (height - 145);
+        screenAwareSize(
+            HeightPicker.bottomMargin + HeightPicker.topMargin, context) -
+        HeightPicker.fontSize;
+    return drawingHeight / HeightPicker.totalUnits;
   }
 
   Widget _drawLabels(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
         right: screenAwareSize(12.0, context),
-        bottom: screenAwareSize(bottomMargin, context),
-        top: screenAwareSize(topMargin, context),
+        bottom: screenAwareSize(HeightPicker.bottomMargin, context),
+        top: screenAwareSize(HeightPicker.topMargin, context),
       ),
       child: Column(
         children: List.generate(
@@ -108,7 +117,7 @@ class HeightPicker extends StatelessWidget {
               "${190 - 5 * idx}",
               style: TextStyle(
                 color: Color.fromRGBO(216, 217, 223, 1.0),
-                fontSize: fontSize,
+                fontSize: HeightPicker.fontSize,
               ),
             );
           },
@@ -119,19 +128,70 @@ class HeightPicker extends StatelessWidget {
     );
   }
 
-  Widget _drawSlider() {
+  Widget _drawSlider(BuildContext context) {
+    return DraggableSlider(
+      height: height,
+      onChange: onChange,
+      pixelsPerUnit: _pixelsPerUnit(context),
+    );
+  }
+}
+
+class DraggableSlider extends StatefulWidget {
+  final int height;
+  final ValueChanged<int> onChange;
+  final double pixelsPerUnit;
+
+  const DraggableSlider(
+      {Key key, this.height, this.onChange, this.pixelsPerUnit})
+      : super(key: key);
+
+  @override
+  _DraggableSliderState createState() => _DraggableSliderState();
+}
+
+class _DraggableSliderState extends State<DraggableSlider> {
+  double yStartOffset;
+  int heightStart;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("$height"),
-        Row(
-          children: <Widget>[
-            SliderCircle(),
-            Expanded(child: SliderLine()),
-          ],
+        Text("${widget.height}"),
+        GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onVerticalDragStart: onDragStart,
+          onVerticalDragUpdate: onDragUpdate,
+          child: Row(
+            children: <Widget>[
+              SliderCircle(),
+              Expanded(child: SliderLine()),
+            ],
+          ),
         ),
       ],
     );
+  }
+
+  int normalizeHeight(int height) {
+    return math.max(minHeight, math.min(maxHeight, height));
+  }
+
+  void onDragStart(DragStartDetails dragStartDetails) {
+    setState(() {
+      yStartOffset = dragStartDetails.globalPosition.dy;
+      heightStart = widget.height;
+    });
+  }
+
+  void onDragUpdate(DragUpdateDetails dragUpdateDetails) {
+    double currentYOffset = dragUpdateDetails.globalPosition.dy;
+    double verticalDifference = yStartOffset - currentYOffset;
+    int diffHeight = verticalDifference ~/ widget.pixelsPerUnit;
+    int height = normalizeHeight(heightStart + diffHeight);
+    setState(() => widget.onChange(height));
   }
 }
 
