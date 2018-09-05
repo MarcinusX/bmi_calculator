@@ -46,17 +46,18 @@ class HeightCardState extends State<HeightCard> {
 
 const int minHeight = 145;
 const int maxHeight = 190;
+const int totalUnits = maxHeight - minHeight;
+const double circleSize = 32.0;
+const double bottomMargin = circleSize / 2;
+const double topMargin = 26.0;
+
+const double labelsFontSize = 13.0;
+const double selectedLabelFontSize = 14.0;
 
 class HeightPicker extends StatelessWidget {
   final double widgetHeight;
   final int height;
   final ValueChanged<int> onChange;
-
-  static final double circleSize = 32.0;
-  static final double bottomMargin = circleSize / 2;
-  static final double topMargin = 16.0;
-  static final double fontSize = 13.0;
-  static final int totalUnits = 190 - 145;
 
   const HeightPicker({Key key, this.widgetHeight, this.height, this.onChange})
       : super(key: key);
@@ -65,7 +66,7 @@ class HeightPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     double sliderPosition = _sliderPosition(context);
     double personImageHeight =
-        sliderPosition + screenAwareSize(HeightPicker.circleSize / 2, context);
+        sliderPosition + screenAwareSize(circleSize / 2, context);
     return Stack(
       children: <Widget>[
         Align(
@@ -76,38 +77,37 @@ class HeightPicker extends StatelessWidget {
             width: personImageHeight / 3,
           ),
         ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: _drawLabels(context),
-        ),
         Positioned(
           child: _drawSlider(context),
           left: 0.0,
           right: 0.0,
           bottom: _sliderPosition(context),
-        )
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: IgnorePointer(child: _drawLabels(context)),
+        ),
       ],
     );
   }
 
   double _sliderPosition(BuildContext context) {
-    return _pixelsPerUnit(context) * (height - minHeight);
+    return _pixelsPerUnit(context) * (height - minHeight) +
+        screenAwareSize(labelsFontSize/2, context);
   }
 
   double _pixelsPerUnit(BuildContext context) {
     double drawingHeight = widgetHeight -
-        screenAwareSize(
-            HeightPicker.bottomMargin + HeightPicker.topMargin, context) -
-        HeightPicker.fontSize;
-    return drawingHeight / HeightPicker.totalUnits;
+        screenAwareSize(bottomMargin + topMargin+ labelsFontSize, context) ;
+    return drawingHeight / totalUnits;
   }
 
   Widget _drawLabels(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
         right: screenAwareSize(12.0, context),
-        bottom: screenAwareSize(HeightPicker.bottomMargin, context),
-        top: screenAwareSize(HeightPicker.topMargin, context),
+        bottom: screenAwareSize(bottomMargin, context),
+        top: screenAwareSize(topMargin, context),
       ),
       child: Column(
         children: List.generate(
@@ -117,7 +117,7 @@ class HeightPicker extends StatelessWidget {
               "${190 - 5 * idx}",
               style: TextStyle(
                 color: Color.fromRGBO(216, 217, 223, 1.0),
-                fontSize: HeightPicker.fontSize,
+                fontSize: screenAwareSize(labelsFontSize, context),
               ),
             );
           },
@@ -159,7 +159,19 @@ class _DraggableSliderState extends State<DraggableSlider> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("${widget.height}"),
+        Padding(
+          padding: EdgeInsets.only(
+              left: screenAwareSize(4.0, context),
+              bottom: screenAwareSize(2.0, context)),
+          child: Text(
+            "${widget.height}",
+            style: TextStyle(
+              fontSize: screenAwareSize(selectedLabelFontSize, context),
+              color: Color.fromRGBO(77, 123, 243, 1.0),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
         GestureDetector(
           behavior: HitTestBehavior.translucent,
           onVerticalDragStart: onDragStart,
