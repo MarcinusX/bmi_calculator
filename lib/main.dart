@@ -1,6 +1,7 @@
 import 'package:bmi_calculator/input_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'styles.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations(
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'BMI Calculator',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: mainBlue,
       ),
       home: InputPage(),
     );
