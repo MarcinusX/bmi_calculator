@@ -1,6 +1,6 @@
-import 'package:bmi_calculator/gender_card.dart';
+import 'package:bmi_calculator/gender/gender_card.dart';
 import 'package:bmi_calculator/height/height_card.dart';
-import 'package:bmi_calculator/weight_card.dart';
+import 'package:bmi_calculator/weight/weight_card.dart';
 import 'package:flutter/material.dart';
 
 import 'widget_utils.dart' show screenAwareSize;

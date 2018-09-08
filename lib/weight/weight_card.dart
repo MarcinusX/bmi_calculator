@@ -1,5 +1,5 @@
 import 'package:bmi_calculator/card_title.dart';
-import 'package:bmi_calculator/weight_slider.dart';
+import 'package:bmi_calculator/weight/weight_slider.dart';
 import 'package:bmi_calculator/widget_utils.dart' show screenAwareSize;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

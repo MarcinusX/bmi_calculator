@@ -50,7 +50,7 @@ class WeightSlider extends StatelessWidget {
                   child: FittedBox(
                     child: Text(
                       itemValue.toString(),
-                      style: _getTextStyle(itemValue),
+                      style: _getTextStyle(context, itemValue),
                     ),
                     fit: BoxFit.scaleDown,
                   ),
@@ -67,16 +67,16 @@ class WeightSlider extends StatelessWidget {
     );
   }
 
-  TextStyle _getHighlightTextStyle() {
+  TextStyle _getHighlightTextStyle(BuildContext context) {
     return new TextStyle(
-      color: Color.fromRGBO(77, 123, 243, 1.0),
+      color: Theme.of(context).primaryColor,
       fontSize: 28.0,
     );
   }
 
-  TextStyle _getTextStyle(int itemValue) {
+  TextStyle _getTextStyle(BuildContext context, int itemValue) {
     return itemValue == value
-        ? _getHighlightTextStyle()
+        ? _getHighlightTextStyle(context)
         : _getDefaultTextStyle();
   }
 
