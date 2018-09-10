@@ -84,7 +84,7 @@ class SliderCircle extends StatelessWidget {
       child: Icon(
         Icons.unfold_more,
         color: Colors.white,
-        size: 0.6* circleSizeAdapted(context),
+        size: 0.6 * circleSizeAdapted(context),
       ),
     );
   }

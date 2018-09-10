@@ -1,11 +1,22 @@
-export 'package:bmi_calculator/styles.dart';
-
 import 'package:bmi_calculator/widget_utils.dart';
 import 'package:flutter/material.dart';
 
-double circleSizeAdapted(BuildContext context) => screenAwareSize(circleSize, context);
-double marginBottomAdapted(BuildContext context) => screenAwareSize(marginBottom, context);
-double marginTopAdapted(BuildContext context) => screenAwareSize(marginTop, context);
+export 'package:bmi_calculator/styles.dart';
+
+double marginBottomAdapted(BuildContext context) =>
+    screenAwareSize(marginBottom, context);
+
+double marginTopAdapted(BuildContext context) =>
+    screenAwareSize(marginTop, context);
+
+double circleSizeAdapted(BuildContext context) =>
+    screenAwareSize(circleSize, context);
+
+const TextStyle labelsTextStyle = const TextStyle(
+  color: labelsGrey,
+  fontSize: labelsFontSize,
+);
+
 const double circleSize = 32.0;
 const double marginBottom = circleSize / 2;
 const double marginTop = 26.0;

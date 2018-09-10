@@ -29,17 +29,17 @@ class HeightPicker extends StatefulWidget {
 }
 
 class _HeightPickerState extends State<HeightPicker> {
-  double yStartOffset;
-  int heightStart;
+  double startDragYOffset;
+  int startDragHeight;
+
+  double get _pixelsPerUnit {
+    return _drawingHeight / widget.totalUnits;
+  }
 
   double get _sliderPosition {
     double halfOfBottomLabel = labelsFontSize / 2;
     int unitsFromBottom = widget.height - widget.minHeight;
     return halfOfBottomLabel + unitsFromBottom * _pixelsPerUnit;
-  }
-
-  double get _pixelsPerUnit {
-    return _drawingHeight / widget.totalUnits;
   }
 
   ///returns actual height of slider to be able to slide
@@ -67,6 +67,11 @@ class _HeightPickerState extends State<HeightPicker> {
     );
   }
 
+  _onTapDown(TapDownDetails tapDownDetails) {
+    int height = _globalOffsetToHeight(tapDownDetails.globalPosition);
+    widget.onChange(_normalizeHeight(height));
+  }
+
   int _normalizeHeight(int height) {
     return math.max(widget.minHeight, math.min(widget.maxHeight, height));
   }
@@ -75,34 +80,49 @@ class _HeightPickerState extends State<HeightPicker> {
     RenderBox getBox = context.findRenderObject();
     Offset localPosition = getBox.globalToLocal(globalOffset);
     double dy = localPosition.dy;
-    dy = dy - marginTopAdapted(context) - labelsFontSize/2;
+    dy = dy - marginTopAdapted(context) - labelsFontSize / 2;
     int height = widget.maxHeight - (dy ~/ _pixelsPerUnit);
     return height;
   }
 
-  _onTapDown(TapDownDetails tapDownDetails) {
-    int height = _globalOffsetToHeight(tapDownDetails.globalPosition);
-    widget.onChange(_normalizeHeight(height));
-  }
-
   _onDragStart(DragStartDetails dragStartDetails) {
-    int height = _globalOffsetToHeight(dragStartDetails.globalPosition);
-    widget.onChange(height);
+    int newHeight = _globalOffsetToHeight(dragStartDetails.globalPosition);
+    widget.onChange(newHeight);
     setState(() {
-      yStartOffset = dragStartDetails.globalPosition.dy;
-      heightStart = height;
+      startDragYOffset = dragStartDetails.globalPosition.dy;
+      startDragHeight = newHeight;
     });
   }
 
   _onDragUpdate(DragUpdateDetails dragUpdateDetails) {
     double currentYOffset = dragUpdateDetails.globalPosition.dy;
-    double verticalDifference = yStartOffset - currentYOffset;
+    double verticalDifference = startDragYOffset - currentYOffset;
     int diffHeight = verticalDifference ~/ _pixelsPerUnit;
-    int height = _normalizeHeight(heightStart + diffHeight);
+    int height = _normalizeHeight(startDragHeight + diffHeight);
     setState(() => widget.onChange(height));
   }
 
+  Widget _drawSlider() {
+    return Positioned(
+      child: HeightSlider(height: widget.height),
+      left: 0.0,
+      right: 0.0,
+      bottom: _sliderPosition,
+    );
+  }
+
   Widget _drawLabels() {
+    int labelsToDisplay = widget.totalUnits ~/ 5 + 1;
+    List<Widget> labels = List.generate(
+      labelsToDisplay,
+      (idx) {
+        return Text(
+          "${widget.maxHeight - 5 * idx}",
+          style: labelsTextStyle,
+        );
+      },
+    );
+
     return Align(
       alignment: Alignment.centerRight,
       child: IgnorePointer(
@@ -113,32 +133,11 @@ class _HeightPickerState extends State<HeightPicker> {
             top: marginTopAdapted(context),
           ),
           child: Column(
-            children: List.generate(
-              10,
-              (idx) {
-                return Text(
-                  "${190 - 5 * idx}",
-                  style: TextStyle(
-                    color: labelsGrey,
-                    fontSize: labelsFontSize,
-                  ),
-                );
-              },
-            ),
-            mainAxisSize: MainAxisSize.max,
+            children: labels,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
           ),
         ),
       ),
-    );
-  }
-
-  Widget _drawSlider() {
-    return Positioned(
-      child: HeightSlider(height: widget.height),
-      left: 0.0,
-      right: 0.0,
-      bottom: _sliderPosition,
     );
   }
 
