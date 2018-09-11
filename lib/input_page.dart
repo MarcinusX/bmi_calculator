@@ -7,11 +7,13 @@ import 'widget_utils.dart' show screenAwareSize;
 
 class InputPage extends StatelessWidget {
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).padding);
     return Scaffold(
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            BmiAppBar(),
             _buildTitle(context),
             Expanded(child: _buildCards(context)),
             _buildBottom(context),
@@ -25,7 +27,7 @@ class InputPage extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
         left: 24.0,
-        top: screenAwareSize(56.0, context),
+        top: screenAwareSize(8.0, context),
       ),
       child: Text(
         "BMI Calculator",
@@ -57,16 +59,6 @@ class InputPage extends StatelessWidget {
     );
   }
 
-  Widget _tempCard(String label) {
-    return Card(
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Text(label),
-      ),
-    );
-  }
-
   Widget _buildBottom(BuildContext context) {
     return Container(
       alignment: Alignment.center,
@@ -74,5 +66,32 @@ class InputPage extends StatelessWidget {
       width: double.infinity,
       child: Switch(value: true, onChanged: (val) {}),
     );
+  }
+}
+
+class BmiAppBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: screenAwareSize(76.0, context),
+        color: Colors.white,
+        alignment: Alignment.bottomLeft,
+        child: Padding(
+          padding: EdgeInsets.all(screenAwareSize(16.0, context)),
+          child: RichText(
+            text: TextSpan(
+                style: TextStyle(
+                    fontSize: 34.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+                text: "Hi Johny ",
+                children: <TextSpan>[
+                  TextSpan(
+                    style: TextStyle(fontWeight: FontWeight.normal),
+                    text: "\uD83D\uDC4B",
+                  )
+                ]),
+          ),
+        ));
   }
 }

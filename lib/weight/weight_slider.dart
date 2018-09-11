@@ -69,7 +69,7 @@ class WeightSlider extends StatelessWidget {
 
   TextStyle _getHighlightTextStyle(BuildContext context) {
     return new TextStyle(
-      color: Theme.of(context).primaryColor,
+      color: Theme.of(context).accentColor,
       fontSize: 28.0,
     );
   }
