@@ -15,22 +15,15 @@ class InputPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             BmiAppBar(),
-            _buildSummaryCard(context),
+            InputSummaryCard(
+              gender: Gender.male,
+              weight: 72,
+              height: 173,
+            ),
             Expanded(child: _buildCards(context)),
             _buildBottom(context),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildSummaryCard(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(screenAwareSize(0.0, context)),
-      child: InputSummaryCard(
-        gender: Gender.male,
-        weight: 72,
-        height: 173,
       ),
     );
   }
@@ -58,11 +51,17 @@ class InputPage extends StatelessWidget {
   }
 
   Widget _buildBottom(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      height: screenAwareSize(108.0, context),
-      width: double.infinity,
-      child: Switch(value: true, onChanged: (val) {}),
+    return Padding(
+      padding: EdgeInsets.only(
+        left: screenAwareSize(16.0, context),
+        right: screenAwareSize(16.0, context),
+        bottom: screenAwareSize(22.0, context),
+        top: screenAwareSize(14.0, context),
+      ),
+      child: Placeholder(
+        fallbackHeight: screenAwareSize(52.0, context),
+        color: Theme.of(context).accentColor,
+      ),
     );
   }
 }
