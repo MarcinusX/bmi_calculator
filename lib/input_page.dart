@@ -1,3 +1,4 @@
+import 'package:bmi_calculator/gender/gender.dart';
 import 'package:bmi_calculator/gender/gender_card.dart';
 import 'package:bmi_calculator/height/height_card.dart';
 import 'package:bmi_calculator/weight/weight_card.dart';
@@ -14,7 +15,7 @@ class InputPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             BmiAppBar(),
-            _buildTitle(context),
+            _buildSummaryCard(context),
             Expanded(child: _buildCards(context)),
             _buildBottom(context),
           ],
@@ -23,15 +24,13 @@ class InputPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTitle(BuildContext context) {
+  Widget _buildSummaryCard(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-        left: 24.0,
-        top: screenAwareSize(8.0, context),
-      ),
-      child: Text(
-        "BMI Calculator",
-        style: new TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold),
+      padding: EdgeInsets.all(screenAwareSize(0.0, context)),
+      child: InputSummaryCard(
+        gender: Gender.male,
+        weight: 72,
+        height: 173,
       ),
     );
   }
@@ -41,7 +40,6 @@ class InputPage extends StatelessWidget {
       padding: EdgeInsets.only(
         left: 14.0,
         right: 14.0,
-        top: screenAwareSize(32.0, context),
       ),
       child: Row(
         children: <Widget>[
@@ -72,7 +70,9 @@ class InputPage extends StatelessWidget {
 class BmiAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Material(
+      elevation: 1.0,
+      child: Container(
         height: screenAwareSize(76.0, context),
         color: Colors.white,
         alignment: Alignment.bottomLeft,
@@ -80,18 +80,74 @@ class BmiAppBar extends StatelessWidget {
           padding: EdgeInsets.all(screenAwareSize(16.0, context)),
           child: RichText(
             text: TextSpan(
-                style: TextStyle(
-                    fontSize: 34.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
-                text: "Hi Johny ",
-                children: <TextSpan>[
-                  TextSpan(
-                    style: TextStyle(fontWeight: FontWeight.normal),
-                    text: "\uD83D\uDC4B",
-                  )
-                ]),
+              style: TextStyle(
+                  fontSize: 34.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+              text: "Hi Johny ",
+              children: <TextSpan>[
+                TextSpan(
+                  style: TextStyle(fontWeight: FontWeight.normal),
+                  text: "\uD83D\uDC4B",
+                )
+              ],
+            ),
           ),
-        ));
+        ),
+      ),
+    );
+  }
+}
+
+class InputSummaryCard extends StatelessWidget {
+  final Gender gender;
+  final int height;
+  final int weight;
+
+  const InputSummaryCard({Key key, this.gender, this.height, this.weight})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.all(screenAwareSize(16.0, context)),
+      child: SizedBox(
+        height: screenAwareSize(32.0, context),
+        child: Row(
+          children: <Widget>[
+            Expanded(child: _genderText()),
+            _divider(),
+            Expanded(child: _text("${weight}kg")),
+            _divider(),
+            Expanded(child: _text("${height}cm")),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _genderText() {
+    String genderText = gender == Gender.other
+        ? '-'
+        : (gender == Gender.male ? 'Male' : 'Female');
+    return _text(genderText);
+  }
+
+  Widget _text(String text) {
+    return Text(
+      text,
+      style: TextStyle(
+        color: Color.fromRGBO(143, 144, 156, 1.0),
+        fontSize: 15.0,
+      ),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  Widget _divider() {
+    return Container(
+      width: 1.0,
+      color: Color.fromRGBO(151, 151, 151, 0.1),
+    );
   }
 }
