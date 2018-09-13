@@ -6,7 +6,18 @@ import 'package:flutter/material.dart';
 
 import 'widget_utils.dart' show screenAwareSize;
 
-class InputPage extends StatelessWidget {
+class InputPage extends StatefulWidget {
+  @override
+  InputPageState createState() {
+    return new InputPageState();
+  }
+}
+
+class InputPageState extends State<InputPage> {
+  Gender gender = Gender.other;
+  int height = 170;
+  int weight = 70;
+
   Widget build(BuildContext context) {
     print(MediaQuery.of(context).padding);
     return Scaffold(
@@ -16,9 +27,9 @@ class InputPage extends StatelessWidget {
           children: <Widget>[
             BmiAppBar(),
             InputSummaryCard(
-              gender: Gender.male,
-              weight: 72,
-              height: 173,
+              gender: gender,
+              weight: weight,
+              height: height,
             ),
             Expanded(child: _buildCards(context)),
             _buildBottom(context),
@@ -29,24 +40,33 @@ class InputPage extends StatelessWidget {
   }
 
   Widget _buildCards(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 14.0,
-        right: 14.0,
-      ),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              children: <Widget>[
-                Expanded(child: GenderCard()),
-                Expanded(child: WeightCard()),
-              ],
-            ),
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: GenderCard(
+                  gender: gender,
+                  onChanged: (val) => setState(() => gender = val),
+                ),
+              ),
+              Expanded(
+                child: WeightCard(
+                  weight: weight,
+                  onChanged: (val) => setState(() => weight = val),
+                ),
+              ),
+            ],
           ),
-          Expanded(child: HeightCard())
-        ],
-      ),
+        ),
+        Expanded(
+          child: HeightCard(
+            height: height,
+            onChanged: (val) => setState(() => height = val),
+          ),
+        )
+      ],
     );
   }
 
@@ -72,7 +92,7 @@ class BmiAppBar extends StatelessWidget {
     return Material(
       elevation: 1.0,
       child: Container(
-        height: screenAwareSize(76.0, context),
+        height: screenAwareSize(80.0, context),
         color: Colors.white,
         alignment: Alignment.bottomLeft,
         child: Padding(

@@ -4,27 +4,21 @@ import 'package:bmi_calculator/widget_utils.dart' show screenAwareSize;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class WeightCard extends StatefulWidget {
-  final int initialWeight;
+class WeightCard extends StatelessWidget {
+  final int weight;
+  final ValueChanged<int> onChanged;
 
-  const WeightCard({Key key, this.initialWeight}) : super(key: key);
-
-  @override
-  _WeightCardState createState() => _WeightCardState();
-}
-
-class _WeightCardState extends State<WeightCard> {
-  int weight;
-
-  @override
-  void initState() {
-    super.initState();
-    weight = widget.initialWeight ?? 70;
-  }
+  const WeightCard({Key key, this.weight = 70, this.onChanged})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.only(
+        left: screenAwareSize(16.0, context),
+        right: screenAwareSize(4.0, context),
+        top: screenAwareSize(4.0, context),
+      ),
       child: Padding(
         padding: EdgeInsets.only(top: screenAwareSize(32.0, context)),
         child: Column(
@@ -56,7 +50,7 @@ class _WeightCardState extends State<WeightCard> {
                   minValue: 30,
                   maxValue: 110,
                   value: weight,
-                  onChanged: (val) => setState(() => weight = val),
+                  onChanged: (val) => onChanged(val),
                   width: constraints.maxWidth,
                 );
         },

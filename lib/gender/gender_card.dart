@@ -2,15 +2,19 @@ import 'dart:math' as math;
 
 import 'package:bmi_calculator/card_title.dart';
 import 'package:bmi_calculator/gender/gender.dart';
+import 'package:bmi_calculator/widget_utils.dart' show screenAwareSize;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:bmi_calculator/widget_utils.dart' show screenAwareSize;
-
 class GenderCard extends StatefulWidget {
-  final Gender initialGender;
+  final Gender gender;
+  final ValueChanged<Gender> onChanged;
 
-  const GenderCard({Key key, this.initialGender}) : super(key: key);
+  const GenderCard({
+    Key key,
+    this.gender = Gender.other,
+    this.onChanged,
+  }) : super(key: key);
 
   @override
   _GenderCardState createState() => _GenderCardState();
@@ -28,16 +32,14 @@ double _circleSize(BuildContext context) => screenAwareSize(80.0, context);
 class _GenderCardState extends State<GenderCard>
     with SingleTickerProviderStateMixin {
   AnimationController _arrowAnimationController;
-  Gender selectedGender;
 
   @override
   void initState() {
-    selectedGender = widget.initialGender ?? Gender.other;
     _arrowAnimationController = new AnimationController(
       vsync: this,
       lowerBound: -_defaultGenderAngle,
       upperBound: _defaultGenderAngle,
-      value: _genderAngles[selectedGender],
+      value: _genderAngles[widget.gender],
     );
     super.initState();
   }
@@ -51,6 +53,11 @@ class _GenderCardState extends State<GenderCard>
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.only(
+        left: screenAwareSize(16.0, context),
+        right: screenAwareSize(4.0, context),
+        bottom: screenAwareSize(4.0, context),
+      ),
       child: Padding(
         padding: EdgeInsets.only(top: screenAwareSize(12.0, context)),
         child: Column(
@@ -102,7 +109,7 @@ class _GenderCardState extends State<GenderCard>
   }
 
   void _setSelectedGender(Gender gender) {
-    setState(() => selectedGender = gender);
+    widget.onChanged(gender);
     _arrowAnimationController.animateTo(
       _genderAngles[gender],
       duration: Duration(milliseconds: 150),
