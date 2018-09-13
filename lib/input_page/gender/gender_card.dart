@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:bmi_calculator/card_title.dart';
-import 'package:bmi_calculator/gender/gender.dart';
+import 'package:bmi_calculator/input_page/card_title.dart';
+import 'package:bmi_calculator/model/gender.dart';
 import 'package:bmi_calculator/widget_utils.dart' show screenAwareSize;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

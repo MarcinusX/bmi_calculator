@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:bmi_calculator/height/height_slider.dart';
-import 'package:bmi_calculator/height/height_styles.dart';
+import 'package:bmi_calculator/input_page/height/height_slider.dart';
+import 'package:bmi_calculator/input_page/height/height_styles.dart';
 import 'package:bmi_calculator/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -42,7 +42,7 @@ class _HeightPickerState extends State<HeightPicker> {
     return halfOfBottomLabel + unitsFromBottom * _pixelsPerUnit;
   }
 
-  ///returns actual height of slider to be able to slide
+  ///returns actual input_page.height of slider to be able to slide
   double get _drawingHeight {
     double totalHeight = widget.widgetHeight;
     double marginBottom = marginBottomAdapted(context);

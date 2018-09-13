@@ -1,5 +1,5 @@
-import 'package:bmi_calculator/card_title.dart';
-import 'package:bmi_calculator/height/height_picker.dart';
+import 'package:bmi_calculator/input_page/card_title.dart';
+import 'package:bmi_calculator/input_page/height/height_picker.dart';
 import 'package:bmi_calculator/widget_utils.dart';
 import 'package:flutter/material.dart';
 

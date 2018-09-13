@@ -1,10 +1,9 @@
-import 'package:bmi_calculator/gender/gender.dart';
-import 'package:bmi_calculator/gender/gender_card.dart';
-import 'package:bmi_calculator/height/height_card.dart';
-import 'package:bmi_calculator/weight/weight_card.dart';
+import 'package:bmi_calculator/input_page/gender/gender_card.dart';
+import 'package:bmi_calculator/input_page/height/height_card.dart';
+import 'package:bmi_calculator/input_page/weight/weight_card.dart';
+import 'package:bmi_calculator/model/gender.dart';
+import 'package:bmi_calculator/widget_utils.dart';
 import 'package:flutter/material.dart';
-
-import 'widget_utils.dart' show screenAwareSize;
 
 class InputPage extends StatefulWidget {
   @override
