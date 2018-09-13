@@ -18,7 +18,6 @@ class InputPageState extends State<InputPage> {
   int weight = 70;
 
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).padding);
     return Scaffold(
       body: SafeArea(
         child: Column(

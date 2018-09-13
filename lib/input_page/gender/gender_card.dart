@@ -50,18 +50,15 @@ class _GenderCardState extends State<GenderCard>
         right: screenAwareSize(4.0, context),
         bottom: screenAwareSize(4.0, context),
       ),
-      child: Padding(
-        padding: EdgeInsets.only(top: screenAwareSize(12.0, context)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            CardTitle("GENDER"),
-            Padding(
-              padding: EdgeInsets.only(top: screenAwareSize(16.0, context)),
-              child: _drawMainStack(),
-            ),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          CardTitle("GENDER"),
+          Padding(
+            padding: EdgeInsets.only(top: screenAwareSize(16.0, context)),
+            child: _drawMainStack(),
+          ),
+        ],
       ),
     );
   }

@@ -19,23 +19,20 @@ class WeightCard extends StatelessWidget {
         right: screenAwareSize(4.0, context),
         top: screenAwareSize(4.0, context),
       ),
-      child: Padding(
-        padding: EdgeInsets.only(top: screenAwareSize(32.0, context)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            CardTitle("WEIGHT", subtitle: "(KG)"),
-            Expanded(
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: screenAwareSize(16.0, context)),
-                  child: _drawSlider(),
-                ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          CardTitle("WEIGHT", subtitle: "(kg)"),
+          Expanded(
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: screenAwareSize(16.0, context)),
+                child: _drawSlider(),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
