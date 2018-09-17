@@ -2,3 +2,8 @@
 
 Implementation of [Johny Vino](https://dribbble.com/johnyvino)'s [design](https://dribbble.com/shots/3558444-BMI-Calculator).
 ![Design](https://cdn.dribbble.com/users/997070/screenshots/3558444/mock.gif)
+
+## [Related blog posts](https://marcinszalek.pl/tag/bmi-calculator/)
+* [GenderCard](https://marcinszalek.pl/flutter/bmi-calculator-gender/)
+* [WeightCard](https://marcinszalek.pl/flutter/bmi-calculator-weight/)
+* [HeightCard](https://marcinszalek.pl/flutter/bmi-calculator-height/)
