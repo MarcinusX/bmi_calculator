@@ -97,16 +97,15 @@ class BmiAppBar extends StatelessWidget {
           padding: EdgeInsets.all(screenAwareSize(16.0, context)),
           child: RichText(
             text: TextSpan(
-              style: TextStyle(
-                  fontSize: 34.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
-              text: "Hi Johny ",
-              children: <TextSpan>[
+              style:
+                  DefaultTextStyle.of(context).style.copyWith(fontSize: 34.0),
+              children: [
                 TextSpan(
-                  style: TextStyle(fontWeight: FontWeight.normal),
+                    text: "Hi Johny ",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                TextSpan(
                   text: "\uD83D\uDC4B",
-                )
+                ),
               ],
             ),
           ),

@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
         accentColor: mainBlue,
+        fontFamily: 'SF Pro Display',
       ),
       home: InputPage(),
     );
