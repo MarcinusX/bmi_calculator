@@ -1,3 +1,4 @@
+import 'package:bmi_calculator/input_page/app_bar.dart';
 import 'package:bmi_calculator/input_page/gender/gender_card.dart';
 import 'package:bmi_calculator/input_page/height/height_card.dart';
 import 'package:bmi_calculator/input_page/weight/weight_card.dart';
@@ -79,37 +80,6 @@ class InputPageState extends State<InputPage> {
       child: Placeholder(
         fallbackHeight: screenAwareSize(52.0, context),
         color: Theme.of(context).accentColor,
-      ),
-    );
-  }
-}
-
-class BmiAppBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      elevation: 1.0,
-      child: Container(
-        height: screenAwareSize(80.0, context),
-        color: Colors.white,
-        alignment: Alignment.bottomLeft,
-        child: Padding(
-          padding: EdgeInsets.all(screenAwareSize(16.0, context)),
-          child: RichText(
-            text: TextSpan(
-              style:
-                  DefaultTextStyle.of(context).style.copyWith(fontSize: 34.0),
-              children: [
-                TextSpan(
-                    text: "Hi Johny ",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(
-                  text: "\uD83D\uDC4B",
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }

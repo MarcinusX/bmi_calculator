@@ -1,0 +1,56 @@
+import 'package:bmi_calculator/widget_utils.dart';
+import 'package:flutter/material.dart';
+
+class BmiAppBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      elevation: 1.0,
+      child: Container(
+        height: screenAwareSize(80.0, context),
+        color: Colors.white,
+        child: Padding(
+          padding: EdgeInsets.all(screenAwareSize(16.0, context)),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              _buildLabel(context),
+              _buildIcon(context),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Padding _buildIcon(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenAwareSize(11.0, context)),
+      child: Container(
+        height: screenAwareSize(20.0, context),
+        width: screenAwareSize(20.0, context),
+        child: Placeholder(
+          color: Colors.blue,
+        ),
+      ),
+    );
+  }
+
+  RichText _buildLabel(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        style: DefaultTextStyle.of(context).style.copyWith(fontSize: 34.0),
+        children: [
+          TextSpan(
+            text: "Hi Johny ",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          TextSpan(
+            text: "\uD83D\uDC4B\uD83C\uDFFB",
+          ),
+        ],
+      ),
+    );
+  }
+}
