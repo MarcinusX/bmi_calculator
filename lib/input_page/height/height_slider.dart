@@ -42,7 +42,7 @@ class SliderLabel extends StatelessWidget {
         "$height",
         style: TextStyle(
           fontSize: selectedLabelFontSize,
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).primaryColor,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -63,7 +63,7 @@ class SliderLine extends StatelessWidget {
                   height: 2.0,
                   decoration: BoxDecoration(
                       color: i.isEven
-                          ? Theme.of(context).accentColor
+                          ? Theme.of(context).primaryColor
                           : Colors.white),
                 ),
               )),
@@ -78,7 +78,7 @@ class SliderCircle extends StatelessWidget {
       width: circleSizeAdapted(context),
       height: circleSizeAdapted(context),
       decoration: BoxDecoration(
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).primaryColor,
         shape: BoxShape.circle,
       ),
       child: Icon(

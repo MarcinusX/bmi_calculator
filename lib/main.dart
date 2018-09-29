@@ -23,8 +23,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'BMI Calculator',
       theme: ThemeData(
-        primaryColor: Colors.white,
-        accentColor: mainBlue,
+        primaryColor: mainBlue,
         fontFamily: 'SF Pro Display',
       ),
       home: InputPage(),

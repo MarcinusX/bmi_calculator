@@ -79,7 +79,7 @@ class InputPageState extends State<InputPage> {
       ),
       child: Placeholder(
         fallbackHeight: screenAwareSize(52.0, context),
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).primaryColor,
       ),
     );
   }
