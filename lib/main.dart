@@ -6,7 +6,9 @@ import 'styles.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle.light.copyWith(
+    SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
       statusBarColor: Colors.white,
       statusBarIconBrightness: Brightness.dark,
     ),

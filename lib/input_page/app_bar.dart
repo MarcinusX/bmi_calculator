@@ -7,7 +7,8 @@ class BmiAppBar extends StatelessWidget {
     return Material(
       elevation: 1.0,
       child: Container(
-        height: screenAwareSize(80.0, context),
+        height:
+            screenAwareSize(80.0, context) + MediaQuery.of(context).padding.top,
         color: Colors.white,
         child: Padding(
           padding: EdgeInsets.all(screenAwareSize(16.0, context)),

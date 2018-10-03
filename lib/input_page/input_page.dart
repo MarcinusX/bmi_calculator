@@ -20,20 +20,18 @@ class InputPageState extends State<InputPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            BmiAppBar(),
-            InputSummaryCard(
-              gender: gender,
-              weight: weight,
-              height: height,
-            ),
-            Expanded(child: _buildCards(context)),
-            _buildBottom(context),
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          BmiAppBar(),
+          InputSummaryCard(
+            gender: gender,
+            weight: weight,
+            height: height,
+          ),
+          Expanded(child: _buildCards(context)),
+          _buildBottom(context),
+        ],
       ),
     );
   }
