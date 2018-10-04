@@ -2,6 +2,9 @@ import 'package:bmi_calculator/widget_utils.dart';
 import 'package:flutter/material.dart';
 
 class BmiAppBar extends StatelessWidget {
+  static const String wavingHandEmoji = "\uD83D\uDC4B";
+  static const String whiteSkinTone = "\uD83C\uDFFB";
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -47,11 +50,16 @@ class BmiAppBar extends StatelessWidget {
             text: "Hi Johny ",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          TextSpan(
-            text: "\uD83D\uDC4B\uD83C\uDFFB",
-          ),
+          TextSpan(text: getEmoji(context)),
         ],
       ),
     );
+  }
+
+  // https://github.com/flutter/flutter/issues/9652
+  String getEmoji(BuildContext context) {
+    return Theme.of(context).platform == TargetPlatform.iOS
+        ? wavingHandEmoji
+        : wavingHandEmoji + whiteSkinTone;
   }
 }
