@@ -1,3 +1,4 @@
+import 'package:bmi_calculator/input_page/input_page_styles.dart';
 import 'package:bmi_calculator/widget_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -10,8 +11,7 @@ class BmiAppBar extends StatelessWidget {
     return Material(
       elevation: 1.0,
       child: Container(
-        height:
-            screenAwareSize(80.0, context) + MediaQuery.of(context).padding.top,
+        height: appBarHeight(context),
         color: Colors.white,
         child: Padding(
           padding: EdgeInsets.all(screenAwareSize(16.0, context)),

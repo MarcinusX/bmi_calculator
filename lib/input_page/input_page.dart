@@ -1,6 +1,7 @@
 import 'package:bmi_calculator/input_page/app_bar.dart';
 import 'package:bmi_calculator/input_page/gender/gender_card.dart';
 import 'package:bmi_calculator/input_page/height/height_card.dart';
+import 'package:bmi_calculator/input_page/input_page_styles.dart';
 import 'package:bmi_calculator/input_page/weight/weight_card.dart';
 import 'package:bmi_calculator/model/gender.dart';
 import 'package:bmi_calculator/widget_utils.dart';
@@ -20,10 +21,13 @@ class InputPageState extends State<InputPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        child: BmiAppBar(),
+        preferredSize: Size.fromHeight(appBarHeight(context)),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          BmiAppBar(),
           InputSummaryCard(
             gender: gender,
             weight: weight,

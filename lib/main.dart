@@ -7,11 +7,13 @@ import 'styles.dart';
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
+      //android:
+      statusBarColor: Colors.white,
       systemNavigationBarColor: Colors.white,
       systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarColor: Colors.white,
+      //ios:
       statusBarIconBrightness: Brightness.dark,
-    ),
+    )
   );
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
