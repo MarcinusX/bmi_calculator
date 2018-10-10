@@ -34,9 +34,7 @@ class BmiAppBar extends StatelessWidget {
       child: Container(
         height: screenAwareSize(20.0, context),
         width: screenAwareSize(20.0, context),
-        child: Placeholder(
-          color: Colors.blue,
-        ),
+        child: Placeholder(color: Theme.of(context).primaryColor),
       ),
     );
   }
