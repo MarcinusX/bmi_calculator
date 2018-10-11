@@ -7,3 +7,4 @@ Implementation of [Johny Vino](https://dribbble.com/johnyvino)'s [design](https:
 * [GenderCard](https://marcinszalek.pl/flutter/bmi-calculator-gender/)
 * [WeightCard](https://marcinszalek.pl/flutter/bmi-calculator-weight/)
 * [HeightCard](https://marcinszalek.pl/flutter/bmi-calculator-height/)
+* [Static layouts](https://marcinszalek.pl/flutter/bmi-calculator-layouts/)
