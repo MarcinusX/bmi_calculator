@@ -2,6 +2,7 @@ import 'package:bmi_calculator/input_page/app_bar.dart';
 import 'package:bmi_calculator/input_page/gender/gender_card.dart';
 import 'package:bmi_calculator/input_page/height/height_card.dart';
 import 'package:bmi_calculator/input_page/input_page_styles.dart';
+import 'package:bmi_calculator/input_page/pacman_slider.dart';
 import 'package:bmi_calculator/input_page/weight/weight_card.dart';
 import 'package:bmi_calculator/model/gender.dart';
 import 'package:bmi_calculator/widget_utils.dart';
@@ -79,10 +80,7 @@ class InputPageState extends State<InputPage> {
         bottom: screenAwareSize(22.0, context),
         top: screenAwareSize(14.0, context),
       ),
-      child: Placeholder(
-        fallbackHeight: screenAwareSize(52.0, context),
-        color: Theme.of(context).primaryColor,
-      ),
+      child: PacManSlider(),
     );
   }
 }
