@@ -20,6 +20,13 @@ class _PacManSliderState extends State<PacManSlider>
     hintAnimationController.forward();
   }
 
+
+  @override
+  void dispose() {
+    hintAnimationController.dispose();
+    super.dispose();
+  }
+
   void _initHintAnimationController() {
     hintAnimationController = AnimationController(
       vsync: this,
