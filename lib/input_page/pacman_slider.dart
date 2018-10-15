@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bmi_calculator/widget_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class PacManSlider extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class PacManSlider extends StatefulWidget {
 
 class _PacManSliderState extends State<PacManSlider>
     with TickerProviderStateMixin {
-  final int numberOfDots = 12;
+  final int numberOfDots = 10;
   AnimationController hintAnimationController;
 
   @override
@@ -19,7 +20,6 @@ class _PacManSliderState extends State<PacManSlider>
     _initHintAnimationController();
     hintAnimationController.forward();
   }
-
 
   @override
   void dispose() {
@@ -50,14 +50,41 @@ class _PacManSliderState extends State<PacManSlider>
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
         color: Theme.of(context).primaryColor,
       ),
-      child: _drawDots(),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: screenAwareSize(24.0, context),
+        ),
+        child: Row(
+          children: <Widget>[
+            _drawPacman(),
+            Expanded(child: _drawDots()),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _drawPacman() {
+    return Padding(
+      padding: EdgeInsets.only(
+        right: screenAwareSize(16.0, context),
+      ),
+      child: SvgPicture.asset(
+        'images/pacman.svg',
+        height: screenAwareSize(25.0, context),
+        width: screenAwareSize(21.0, context),
+      ),
     );
   }
 
   Widget _drawDots() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: List.generate(numberOfDots, _generateDot),
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: List.generate(numberOfDots, _generateDot)
+        ..add(Opacity(
+          opacity: 0.5,
+          child: _drawStaticDot(14.0),
+        )),
     );
   }
 
@@ -66,16 +93,20 @@ class _PacManSliderState extends State<PacManSlider>
     return AnimatedBuilder(
       animation: opacityAnimation,
       builder: (context, child) => Opacity(
-        opacity: _dotAnimationToOpacity(opacityAnimation),
-        child: child,
-      ),
-      child: Container(
-        height: screenAwareSize(9.0, context),
-        width: screenAwareSize(9.0, context),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-        ),
+            opacity: _dotAnimationToOpacity(opacityAnimation),
+            child: child,
+          ),
+      child: _drawStaticDot(9.0),
+    );
+  }
+
+  Widget _drawStaticDot(double size) {
+    return Container(
+      height: screenAwareSize(size, context),
+      width: screenAwareSize(size, context),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white,
       ),
     );
   }
@@ -104,7 +135,7 @@ class _PacManSliderState extends State<PacManSlider>
       return maxOpacity;
     } else {
       //dot gets darker
-      return minOpacity + maxOpacity * (3.0 - animation.value);
+      return minOpacity + (maxOpacity - minOpacity) * (3.0 - animation.value);
     }
   }
 }
