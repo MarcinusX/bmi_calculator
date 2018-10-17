@@ -1,17 +1,18 @@
-import 'dart:async';
-
 import 'package:bmi_calculator/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:math' as math;
 
-class PacManSlider extends StatefulWidget {
+class PacmanSlider extends StatefulWidget {
   @override
-  _PacManSliderState createState() => _PacManSliderState();
+  _PacmanSliderState createState() => _PacmanSliderState();
 }
 
-class _PacManSliderState extends State<PacManSlider>
+class _PacmanSliderState extends State<PacmanSlider>
     with TickerProviderStateMixin {
   final int numberOfDots = 10;
+  final double minOpacity = 0.1;
+  final double maxOpacity = 0.5;
   AnimationController hintAnimationController;
 
   @override
@@ -30,7 +31,7 @@ class _PacManSliderState extends State<PacManSlider>
   void _initHintAnimationController() {
     hintAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: 800),
     );
     hintAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -45,7 +46,6 @@ class _PacManSliderState extends State<PacManSlider>
   Widget build(BuildContext context) {
     return Container(
       height: screenAwareSize(52.0, context),
-      width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
         color: Theme.of(context).primaryColor,
@@ -56,7 +56,7 @@ class _PacManSliderState extends State<PacManSlider>
         ),
         child: Row(
           children: <Widget>[
-            _drawPacman(),
+            PacmanIcon(),
             Expanded(child: _drawDots()),
           ],
         ),
@@ -64,7 +64,81 @@ class _PacManSliderState extends State<PacManSlider>
     );
   }
 
-  Widget _drawPacman() {
+  Widget _drawDots() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: List.generate(numberOfDots, _generateDot)
+        ..add(Opacity(
+          opacity: maxOpacity,
+          child: Dot(size: 14.0),
+        )),
+    );
+  }
+
+  Widget _generateDot(int dotNumber) {
+    Animation animation = _initDotAnimation(dotNumber);
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, child) => Opacity(
+            opacity: animation.value,
+            child: child,
+          ),
+      child: Dot(size: 9.0),
+    );
+  }
+
+  Animation<double> _initDotAnimation(int dotNumber) {
+    double lastDotStartTime = 0.4;
+    double dotAnimationDuration = 0.5;
+    double begin = lastDotStartTime * dotNumber / numberOfDots;
+    double end = begin + dotAnimationDuration;
+    return SinusoidalAnimation(min: minOpacity, max: maxOpacity).animate(
+      CurvedAnimation(
+        parent: hintAnimationController,
+        curve: Interval(begin, end),
+      ),
+    );
+  }
+}
+
+class SinusoidalAnimation extends Animatable<double> {
+  SinusoidalAnimation({this.min, this.max});
+
+  final double min;
+  final double max;
+
+  @protected
+  double lerp(double t) {
+    return min + (max - min) * math.sin(math.pi * t);
+  }
+
+  @override
+  double transform(double t) {
+    return (t == 0.0 || t == 1.0) ? min : lerp(t);
+  }
+}
+
+class Dot extends StatelessWidget {
+  final double size;
+
+  const Dot({Key key, @required this.size}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: screenAwareSize(size, context),
+      width: screenAwareSize(size, context),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white,
+      ),
+    );
+  }
+}
+
+class PacmanIcon extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
         right: screenAwareSize(16.0, context),
@@ -75,67 +149,5 @@ class _PacManSliderState extends State<PacManSlider>
         width: screenAwareSize(21.0, context),
       ),
     );
-  }
-
-  Widget _drawDots() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: List.generate(numberOfDots, _generateDot)
-        ..add(Opacity(
-          opacity: 0.5,
-          child: _drawStaticDot(14.0),
-        )),
-    );
-  }
-
-  Widget _generateDot(int dotNumber) {
-    Animation opacityAnimation = _initDotAnimation(dotNumber);
-    return AnimatedBuilder(
-      animation: opacityAnimation,
-      builder: (context, child) => Opacity(
-            opacity: _dotAnimationToOpacity(opacityAnimation),
-            child: child,
-          ),
-      child: _drawStaticDot(9.0),
-    );
-  }
-
-  Widget _drawStaticDot(double size) {
-    return Container(
-      height: screenAwareSize(size, context),
-      width: screenAwareSize(size, context),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.white,
-      ),
-    );
-  }
-
-  Animation<double> _initDotAnimation(int dotNumber) {
-    double lastDotStartTime = 0.3;
-    double dotAnimationDuration = 0.6;
-    double begin = lastDotStartTime * dotNumber / numberOfDots;
-    double end = begin + dotAnimationDuration;
-    return Tween(begin: 0.0, end: 3.0).animate(
-      CurvedAnimation(
-        parent: hintAnimationController,
-        curve: Interval(begin, end),
-      ),
-    );
-  }
-
-  double _dotAnimationToOpacity(Animation animation) {
-    double minOpacity = 0.1;
-    double maxOpacity = 0.5;
-    if (animation.value < 1.0) {
-      //dot gets brighter
-      return minOpacity + animation.value * maxOpacity;
-    } else if (animation.value < 2.0) {
-      //dot remains bright
-      return maxOpacity;
-    } else {
-      //dot gets darker
-      return minOpacity + (maxOpacity - minOpacity) * (3.0 - animation.value);
-    }
   }
 }

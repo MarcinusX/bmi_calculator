@@ -80,7 +80,7 @@ class InputPageState extends State<InputPage> {
         bottom: screenAwareSize(22.0, context),
         top: screenAwareSize(14.0, context),
       ),
-      child: PacManSlider(),
+      child: PacmanSlider(),
     );
   }
 }
