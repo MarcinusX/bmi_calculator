@@ -1,7 +1,12 @@
+import 'dart:math' as math;
+
 import 'package:bmi_calculator/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'dart:math' as math;
+
+const double _pacmanWidth = 21.0;
+const double _sliderHorizontalMargin = 24.0;
+const double _dotsLeftMargin = 16.0;
 
 class PacmanSlider extends StatefulWidget {
   @override
@@ -13,6 +18,7 @@ class _PacmanSliderState extends State<PacmanSlider>
   final int numberOfDots = 10;
   final double minOpacity = 0.1;
   final double maxOpacity = 0.5;
+  double _pacmanPosition = 24.0;
   AnimationController hintAnimationController;
 
   @override
@@ -50,28 +56,55 @@ class _PacmanSliderState extends State<PacmanSlider>
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
         color: Theme.of(context).primaryColor,
       ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: screenAwareSize(24.0, context),
-        ),
-        child: Row(
-          children: <Widget>[
-            PacmanIcon(),
-            Expanded(child: _drawDots()),
-          ],
-        ),
+      child: LayoutBuilder(
+        builder: (context, constraints) => Stack(
+              alignment: Alignment.centerRight,
+              children: <Widget>[
+                _drawPacman(width: constraints.maxWidth),
+                _drawDots(),
+              ],
+            ),
       ),
     );
   }
 
+  Widget _drawPacman({double width}) {
+    return Positioned(
+      left: _pacmanPosition,
+      child: GestureDetector(
+        onHorizontalDragUpdate: (dragUpdate) {
+          setState(() {
+            _pacmanPosition += dragUpdate.delta.dx;
+            _pacmanPosition = math.max(
+              _pacmanMinPosition(),
+                math.min(_pacmanMaxPosition(width),
+                    _pacmanPosition));
+          });
+        },
+        child: PacmanIcon(),
+      ),
+    );
+  }
+
+  double _pacmanMinPosition() =>
+      screenAwareSize(_sliderHorizontalMargin, context);
+
+  double _pacmanMaxPosition(double sliderWidth) => screenAwareSize(
+      sliderWidth - _sliderHorizontalMargin - _pacmanWidth, context);
+
   Widget _drawDots() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: List.generate(numberOfDots, _generateDot)
-        ..add(Opacity(
-          opacity: maxOpacity,
-          child: Dot(size: 14.0),
-        )),
+    return Padding(
+      padding: EdgeInsets.only(
+          left: screenAwareSize(_sliderHorizontalMargin + _pacmanWidth + _dotsLeftMargin, context),
+          right: screenAwareSize(_sliderHorizontalMargin, context)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: List.generate(numberOfDots, _generateDot)
+          ..add(Opacity(
+            opacity: maxOpacity,
+            child: Dot(size: 14.0),
+          )),
+      ),
     );
   }
 
@@ -141,12 +174,12 @@ class PacmanIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        right: screenAwareSize(16.0, context),
-      ),
+//        right: screenAwareSize(16.0, context),
+          ),
       child: SvgPicture.asset(
         'images/pacman.svg',
         height: screenAwareSize(25.0, context),
-        width: screenAwareSize(21.0, context),
+        width: screenAwareSize(_pacmanWidth, context),
       ),
     );
   }
