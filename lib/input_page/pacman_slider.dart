@@ -26,21 +26,22 @@ class _PacmanSliderState extends State<PacmanSlider>
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
   }
 
-  double _pacmanMinPosition() =>
-      screenAwareSize(_sliderHorizontalMargin, context);
-
-  double _pacmanMaxPosition(double sliderWidth) =>
-      sliderWidth -
-      screenAwareSize(_sliderHorizontalMargin / 2 + _pacmanWidth, context);
+  @override
+  void dispose() {
+    pacmanMovementController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    Decoration decoration = BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      color: Theme.of(context).primaryColor,
+    );
+
     return Container(
       height: screenAwareSize(52.0, context),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-        color: Theme.of(context).primaryColor,
-      ),
+      decoration: decoration,
       child: LayoutBuilder(
         builder: (context, constraints) {
           return GestureDetector(
@@ -50,7 +51,7 @@ class _PacmanSliderState extends State<PacmanSlider>
               alignment: Alignment.centerRight,
               children: <Widget>[
                 AnimatedDots(),
-                _drawDotCurtain(width: constraints.maxWidth),
+                _drawDotCurtain(decoration, width: constraints.maxWidth),
                 _drawPacman(width: constraints.maxWidth),
               ],
             ),
@@ -60,19 +61,15 @@ class _PacmanSliderState extends State<PacmanSlider>
     );
   }
 
-  Widget _drawDotCurtain({double width = 0.0}) {
-    bool shouldBeVisible = width != 0.0;
+  Widget _drawDotCurtain(Decoration decoration, {double width = 0.0}) {
+    if (width == 0.0) {
+      return Container();
+    }
+    double marginRight =
+        width - _pacmanPosition - screenAwareSize(_pacmanWidth / 2, context);
     return Positioned.fill(
-      right:
-          width - _pacmanPosition - screenAwareSize(_pacmanWidth / 2, context),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          color: shouldBeVisible
-              ? Theme.of(context).primaryColor
-              : Colors.transparent,
-        ),
-      ),
+      right: marginRight,
+      child: Container(decoration: decoration),
     );
   }
 
@@ -91,15 +88,25 @@ class _PacmanSliderState extends State<PacmanSlider>
   }
 
   Animation<double> _initPacmanAnimation(double width) {
-    Animation<double> animation =
-        Tween(begin: _pacmanMinPosition(), end: _pacmanMaxPosition(width))
-            .animate(pacmanMovementController);
+    Animation<double> animation = Tween(
+      begin: _pacmanMinPosition(),
+      end: _pacmanMaxPosition(width),
+    ).animate(pacmanMovementController);
+
     animation.addListener(() {
       setState(() {
         _pacmanPosition = animation.value;
       });
+      if (animation.status == AnimationStatus.completed) {
+        _onPacmanSubmited();
+      }
     });
     return animation;
+  }
+
+  _onPacmanSubmited() {
+    //temporary:
+    Future.delayed(Duration(seconds: 1), () => _resetPacman());
   }
 
   _onPacmanDrag(double width, DragUpdateDetails details) {
@@ -129,6 +136,13 @@ class _PacmanSliderState extends State<PacmanSlider>
   _resetPacman() {
     setState(() => _pacmanPosition = _pacmanMinPosition());
   }
+
+  double _pacmanMinPosition() =>
+      screenAwareSize(_sliderHorizontalMargin, context);
+
+  double _pacmanMaxPosition(double sliderWidth) =>
+      sliderWidth -
+      screenAwareSize(_sliderHorizontalMargin / 2 + _pacmanWidth, context);
 }
 
 class AnimatedDots extends StatefulWidget {
@@ -253,10 +267,15 @@ class Dot extends StatelessWidget {
 class PacmanIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset(
-      'images/pacman.svg',
-      height: screenAwareSize(25.0, context),
-      width: screenAwareSize(_pacmanWidth, context),
+    return Padding(
+      padding: EdgeInsets.only(
+        right: screenAwareSize(16.0, context),
+      ),
+      child: SvgPicture.asset(
+        'images/pacman.svg',
+        height: screenAwareSize(25.0, context),
+        width: screenAwareSize(21.0, context),
+      ),
     );
   }
 }
