@@ -235,14 +235,9 @@ class SinusoidalAnimation extends Animatable<double> {
   final double min;
   final double max;
 
-  @protected
-  double lerp(double t) {
-    return min + (max - min) * math.sin(math.pi * t);
-  }
-
   @override
   double transform(double t) {
-    return (t == 0.0 || t == 1.0) ? min : lerp(t);
+    return min + (max - min) * math.sin(math.pi * t);
   }
 }
 
