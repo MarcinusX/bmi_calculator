@@ -9,3 +9,4 @@ Implementation of [Johny Vino](https://dribbble.com/johnyvino)'s [design](https:
 * [HeightCard](https://marcinszalek.pl/flutter/bmi-calculator-height/)
 * [Static layouts](https://marcinszalek.pl/flutter/bmi-calculator-layouts/)
 * [Animated slider hint](https://marcinszalek.pl/flutter/bmi-calculator-animated-slider-hint/)
+* [Custom slider](https://marcinszalek.pl/flutter/bmi-calculator-custom-slider/)
