@@ -5,6 +5,7 @@ import 'package:bmi_calculator/input_page/input_page_styles.dart';
 import 'package:bmi_calculator/input_page/pacman_slider.dart';
 import 'package:bmi_calculator/input_page/weight/weight_card.dart';
 import 'package:bmi_calculator/model/gender.dart';
+import 'package:bmi_calculator/result_page/result_page.dart';
 import 'package:bmi_calculator/widget_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -80,7 +81,11 @@ class InputPageState extends State<InputPage> {
         bottom: screenAwareSize(22.0, context),
         top: screenAwareSize(14.0, context),
       ),
-      child: PacmanSlider(),
+      child: PacmanSlider(
+        onSubmit: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ResultPage(),
+            )),
+      ),
     );
   }
 }

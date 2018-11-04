@@ -9,6 +9,10 @@ const double _sliderHorizontalMargin = 24.0;
 const double _dotsLeftMargin = 8.0;
 
 class PacmanSlider extends StatefulWidget {
+  final VoidCallback onSubmit;
+
+  const PacmanSlider({Key key, this.onSubmit}) : super(key: key);
+
   @override
   _PacmanSliderState createState() => _PacmanSliderState();
 }
@@ -107,6 +111,7 @@ class _PacmanSliderState extends State<PacmanSlider>
   _onPacmanSubmited() {
     //temporary:
     Future.delayed(Duration(seconds: 1), () => _resetPacman());
+    widget?.onSubmit();
   }
 
   _onPacmanDrag(double width, DragUpdateDetails details) {
