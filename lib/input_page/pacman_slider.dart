@@ -22,6 +22,7 @@ class _PacmanSliderState extends State<PacmanSlider>
   double _pacmanPosition = 24.0;
   AnimationController pacmanMovementController;
   Animation<double> pacmanAnimation;
+  double _width = 0.0;
 
   @override
   void initState() {
@@ -48,15 +49,18 @@ class _PacmanSliderState extends State<PacmanSlider>
       decoration: decoration,
       child: LayoutBuilder(
         builder: (context, constraints) {
+          if (_width == 0.0) {
+            _width = constraints.maxWidth;
+          }
           return GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () => _animatePacmanToEnd(width: constraints.maxWidth),
+            onTap: () => _animatePacmanToEnd(width: _width),
             child: Stack(
               alignment: Alignment.centerRight,
               children: <Widget>[
                 AnimatedDots(),
-                _drawDotCurtain(decoration, width: constraints.maxWidth),
-                _drawPacman(width: constraints.maxWidth),
+                _drawDotCurtain(decoration, width: _width),
+                _drawPacman(width: _width),
               ],
             ),
           );
@@ -156,7 +160,7 @@ class AnimatedDots extends StatefulWidget {
 }
 
 class _AnimatedDotsState extends State<AnimatedDots>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   final int numberOfDots = 10;
   final double minOpacity = 0.1;
   final double maxOpacity = 0.5;
