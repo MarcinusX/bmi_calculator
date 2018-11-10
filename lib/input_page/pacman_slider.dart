@@ -10,8 +10,10 @@ const double _dotsLeftMargin = 8.0;
 
 class PacmanSlider extends StatefulWidget {
   final VoidCallback onSubmit;
+  final AnimationController submitAnimationController;
 
-  const PacmanSlider({Key key, this.onSubmit}) : super(key: key);
+  const PacmanSlider({Key key, this.onSubmit, this.submitAnimationController})
+      : super(key: key);
 
   @override
   _PacmanSliderState createState() => _PacmanSliderState();
@@ -20,15 +22,23 @@ class PacmanSlider extends StatefulWidget {
 class _PacmanSliderState extends State<PacmanSlider>
     with TickerProviderStateMixin {
   double _pacmanPosition = 24.0;
+  Animation<double> _submitWidthAnimation;
+  Animation<BorderRadius> _bordersAnimation;
   AnimationController pacmanMovementController;
   Animation<double> pacmanAnimation;
-  double _width = 0.0;
 
   @override
   void initState() {
     super.initState();
     pacmanMovementController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+    _bordersAnimation = BorderRadiusTween(
+            begin: BorderRadius.all(Radius.circular(8.0)),
+            end: BorderRadius.all(Radius.circular(50.0)))
+        .animate(CurvedAnimation(
+      parent: widget.submitAnimationController,
+      curve: Interval(0.0, 0.07),
+    ));
   }
 
   @override
@@ -37,39 +47,56 @@ class _PacmanSliderState extends State<PacmanSlider>
     super.dispose();
   }
 
+  double get width => _submitWidthAnimation?.value ?? 0.0;
+
   @override
   Widget build(BuildContext context) {
-    Decoration decoration = BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      color: Theme.of(context).primaryColor,
-    );
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (width == 0.0) {
+          _submitWidthAnimation = Tween<double>(
+                  begin: constraints.maxWidth,
+                  end: screenAwareSize(52.0, context))
+              .animate(CurvedAnimation(
+                  parent: widget.submitAnimationController,
+                  curve: Interval(0.05, 0.15)));
+        }
+        return AnimatedBuilder(
+          animation: widget.submitAnimationController,
+          builder: (context, child) {
+            Decoration decoration = BoxDecoration(
+              borderRadius: _bordersAnimation.value,
+              color: Theme.of(context).primaryColor,
+            );
 
-    return Container(
-      height: screenAwareSize(52.0, context),
-      decoration: decoration,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          if (_width == 0.0) {
-            _width = constraints.maxWidth;
-          }
-          return GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () => _animatePacmanToEnd(width: _width),
-            child: Stack(
-              alignment: Alignment.centerRight,
-              children: <Widget>[
-                AnimatedDots(),
-                _drawDotCurtain(decoration, width: _width),
-                _drawPacman(width: _width),
-              ],
-            ),
-          );
-        },
-      ),
+            return Center(
+              child: Container(
+                height: screenAwareSize(52.0, context),
+                width: _submitWidthAnimation?.value,
+                decoration: decoration,
+                child: _submitWidthAnimation?.isDismissed ?? false
+                    ? GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () => _animatePacmanToEnd(),
+                        child: Stack(
+                          alignment: Alignment.centerRight,
+                          children: <Widget>[
+                            AnimatedDots(),
+                            _drawDotCurtain(decoration),
+                            _drawPacman(),
+                          ],
+                        ),
+                      )
+                    : Container(),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
-  Widget _drawDotCurtain(Decoration decoration, {double width = 0.0}) {
+  Widget _drawDotCurtain(Decoration decoration) {
     if (width == 0.0) {
       return Container();
     }
@@ -81,9 +108,9 @@ class _PacmanSliderState extends State<PacmanSlider>
     );
   }
 
-  Widget _drawPacman({double width}) {
+  Widget _drawPacman() {
     if (pacmanAnimation == null && width != 0.0) {
-      pacmanAnimation = _initPacmanAnimation(width);
+      pacmanAnimation = _initPacmanAnimation();
     }
     return Positioned(
       left: _pacmanPosition,
@@ -95,7 +122,7 @@ class _PacmanSliderState extends State<PacmanSlider>
     );
   }
 
-  Animation<double> _initPacmanAnimation(double width) {
+  Animation<double> _initPacmanAnimation() {
     Animation<double> animation = Tween(
       begin: _pacmanMinPosition(),
       end: _pacmanMaxPosition(width),
@@ -131,19 +158,19 @@ class _PacmanSliderState extends State<PacmanSlider>
         _pacmanPosition + screenAwareSize(_pacmanWidth / 2, context) >
             0.5 * width;
     if (isOverHalf) {
-      _animatePacmanToEnd(width: width);
+      _animatePacmanToEnd();
     } else {
       _resetPacman();
     }
   }
 
-  _animatePacmanToEnd({double width}) {
+  _animatePacmanToEnd() {
     pacmanMovementController.forward(
         from: _pacmanPosition / _pacmanMaxPosition(width));
   }
 
   _resetPacman() {
-    setState(() => _pacmanPosition = _pacmanMinPosition());
+//    setState(() => _pacmanPosition = _pacmanMinPosition());
   }
 
   double _pacmanMinPosition() =>
@@ -187,7 +214,9 @@ class _AnimatedDotsState extends State<AnimatedDots>
     hintAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Future.delayed(Duration(milliseconds: 800), () {
-          hintAnimationController.forward(from: 0.0);
+          if(this.mounted) {
+            hintAnimationController.forward(from: 0.0);
+          }
         });
       }
     });
