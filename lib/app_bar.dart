@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class BmiAppBar extends StatelessWidget {
+  final bool isInputPage;
   static const String wavingHandEmoji = "\uD83D\uDC4B";
   static const String whiteSkinTone = "\uD83C\uDFFB";
+
+  const BmiAppBar({Key key, this.isInputPage = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +49,10 @@ class BmiAppBar extends StatelessWidget {
         style: DefaultTextStyle.of(context).style.copyWith(fontSize: 34.0),
         children: [
           TextSpan(
-            text: "Hi Johny ",
+            text: isInputPage ? "Hi Johny " : "Your BMI",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          TextSpan(text: getEmoji(context)),
+          TextSpan(text: isInputPage ? getEmoji(context) : ""),
         ],
       ),
     );

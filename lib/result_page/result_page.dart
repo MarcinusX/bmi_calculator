@@ -1,8 +1,17 @@
-import 'package:bmi_calculator/input_page/app_bar.dart';
+import 'package:bmi_calculator/app_bar.dart';
+import 'package:bmi_calculator/calculator.dart' as calculator;
 import 'package:bmi_calculator/input_page/input_page_styles.dart';
+import 'package:bmi_calculator/model/gender.dart';
 import 'package:flutter/material.dart';
 
 class ResultPage extends StatefulWidget {
+  final int height;
+  final int weight;
+  final Gender gender;
+
+  const ResultPage({Key key, this.height, this.weight, this.gender})
+      : super(key: key);
+
   @override
   _ResultPageState createState() => _ResultPageState();
 }
@@ -12,12 +21,22 @@ class _ResultPageState extends State<ResultPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        child: BmiAppBar(),
+        child: BmiAppBar(isInputPage: false),
         preferredSize: Size.fromHeight(appBarHeight(context)),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[ResultCard(), _buildBottomBar()],
+        children: <Widget>[
+          ResultCard(
+            bmi: calculator.calculateBMI(
+                height: widget.height, weight: widget.weight),
+            minWeight:
+                calculator.calculateMinNormalWeight(height: widget.height),
+            maxWeight:
+                calculator.calculateMaxNormalWeight(height: widget.height),
+          ),
+          _buildBottomBar(),
+        ],
       ),
     );
   }
@@ -37,7 +56,7 @@ class _ResultPageState extends State<ResultPage> {
                 color: Colors.grey,
                 size: 28.0,
               ),
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).pop(),
             ),
           ),
           Container(
@@ -52,7 +71,7 @@ class _ResultPageState extends State<ResultPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6.0),
                 ),
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).pop(),
                 color: Theme.of(context).primaryColor,
               )),
           Padding(
@@ -74,9 +93,11 @@ class _ResultPageState extends State<ResultPage> {
 
 class ResultCard extends StatelessWidget {
   final double bmi;
-  final double normalBmi;
+  final double minWeight;
+  final double maxWeight;
 
-  ResultCard({Key key, this.bmi = 21.19, this.normalBmi}) : super(key: key);
+  ResultCard({Key key, this.bmi, this.minWeight, this.maxWeight})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -96,13 +117,13 @@ class ResultCard extends StatelessWidget {
               style: TextStyle(fontSize: 140.0, fontWeight: FontWeight.bold),
             ),
             Text(
-              'BMI = ${bmi.toStringAsFixed(2)} kg/m2',
+              'BMI = ${bmi.toStringAsFixed(2)} kg/m²',
               style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: Text(
-                'Normal BMI weight range for the height:\n80kg - 90kg',
+                'Normal BMI weight range for the height:\n${minWeight.round()}kg - ${maxWeight.round()}kg',
                 style: TextStyle(fontSize: 14.0, color: Colors.grey),
                 textAlign: TextAlign.center,
               ),

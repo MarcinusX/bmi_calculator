@@ -5,11 +5,11 @@ class FadeRoute<T> extends MaterialPageRoute<T> {
       : super(builder: builder, settings: settings);
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 1000);
+  Duration get transitionDuration => const Duration(milliseconds: 500);
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation, Widget child) {
-    return child;
+    return FadeTransition(opacity: animation, child: child);
   }
 }

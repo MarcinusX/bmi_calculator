@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:bmi_calculator/input_page/app_bar.dart';
-import 'package:bmi_calculator/input_page/fade_route.dart';
+import 'package:bmi_calculator/app_bar.dart';
+import 'package:bmi_calculator/fade_route.dart';
 import 'package:bmi_calculator/input_page/gender/gender_card.dart';
 import 'package:bmi_calculator/input_page/height/height_card.dart';
 import 'package:bmi_calculator/input_page/input_page_styles.dart';
@@ -55,7 +55,13 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
     _submitAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Navigator.of(context)
-            .push(FadeRoute(builder: (context) => ResultPage()))
+            .push(FadeRoute(
+              builder: (context) => ResultPage(
+                    weight: weight,
+                    height: height,
+                    gender: gender,
+                  ),
+            ))
             .then((_) => _submitAnimationController.reset());
       }
     });
