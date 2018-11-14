@@ -22,8 +22,8 @@ class PacmanSlider extends StatefulWidget {
 class _PacmanSliderState extends State<PacmanSlider>
     with TickerProviderStateMixin {
   double _pacmanPosition = 24.0;
-  Animation<double> _submitWidthAnimation;
   Animation<BorderRadius> _bordersAnimation;
+  Animation<double> _submitWidthAnimation;
   AnimationController pacmanMovementController;
   Animation<double> pacmanAnimation;
 
@@ -33,9 +33,9 @@ class _PacmanSliderState extends State<PacmanSlider>
     pacmanMovementController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
     _bordersAnimation = BorderRadiusTween(
-            begin: BorderRadius.all(Radius.circular(8.0)),
-            end: BorderRadius.all(Radius.circular(50.0)))
-        .animate(CurvedAnimation(
+      begin: BorderRadius.circular(8.0),
+      end: BorderRadius.circular(50.0),
+    ).animate(CurvedAnimation(
       parent: widget.submitAnimationController,
       curve: Interval(0.0, 0.07),
     ));
@@ -53,14 +53,13 @@ class _PacmanSliderState extends State<PacmanSlider>
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (width == 0.0) {
-          _submitWidthAnimation = Tween<double>(
-                  begin: constraints.maxWidth,
-                  end: screenAwareSize(52.0, context))
-              .animate(CurvedAnimation(
-                  parent: widget.submitAnimationController,
-                  curve: Interval(0.05, 0.15)));
-        }
+        _submitWidthAnimation = Tween<double>(
+          begin: constraints.maxWidth,
+          end: screenAwareSize(52.0, context),
+        ).animate(CurvedAnimation(
+          parent: widget.submitAnimationController,
+          curve: Interval(0.05, 0.15),
+        ));
         return AnimatedBuilder(
           animation: widget.submitAnimationController,
           builder: (context, child) {
@@ -72,9 +71,9 @@ class _PacmanSliderState extends State<PacmanSlider>
             return Center(
               child: Container(
                 height: screenAwareSize(52.0, context),
-                width: _submitWidthAnimation?.value,
+                width: width,
                 decoration: decoration,
-                child: _submitWidthAnimation?.isDismissed ?? false
+                child: _submitWidthAnimation.isDismissed
                     ? GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () => _animatePacmanToEnd(),
@@ -109,9 +108,7 @@ class _PacmanSliderState extends State<PacmanSlider>
   }
 
   Widget _drawPacman() {
-    if (pacmanAnimation == null && width != 0.0) {
-      pacmanAnimation = _initPacmanAnimation();
-    }
+    pacmanAnimation = _initPacmanAnimation();
     return Positioned(
       left: _pacmanPosition,
       child: GestureDetector(
@@ -140,9 +137,8 @@ class _PacmanSliderState extends State<PacmanSlider>
   }
 
   _onPacmanSubmited() {
-    //temporary:
-    Future.delayed(Duration(seconds: 1), () => _resetPacman());
     widget?.onSubmit();
+    Future.delayed(Duration(seconds: 1), () => _resetPacman());
   }
 
   _onPacmanDrag(double width, DragUpdateDetails details) {
@@ -170,7 +166,9 @@ class _PacmanSliderState extends State<PacmanSlider>
   }
 
   _resetPacman() {
-//    setState(() => _pacmanPosition = _pacmanMinPosition());
+    if (this.mounted) {
+      setState(() => _pacmanPosition = _pacmanMinPosition());
+    }
   }
 
   double _pacmanMinPosition() =>
@@ -214,7 +212,7 @@ class _AnimatedDotsState extends State<AnimatedDots>
     hintAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Future.delayed(Duration(milliseconds: 800), () {
-          if(this.mounted) {
+          if (this.mounted) {
             hintAnimationController.forward(from: 0.0);
           }
         });
