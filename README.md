@@ -14,3 +14,6 @@ Implementation of [Johny Vino](https://dribbble.com/johnyvino)'s [design](https:
 * [Animated slider hint](https://marcinszalek.pl/flutter/bmi-calculator-animated-slider-hint/)
 * [Custom slider](https://marcinszalek.pl/flutter/bmi-calculator-custom-slider/)
 * [Animated transition](https://marcinszalek.pl/flutter/bmi-calculator-in-flutter-part-7-animated-transition/)
+
+## Available also on Medium!
+[See all related Medium posts](https://medium.com/flutter-community/marcin-sza%C5%82ek-bmi/home)
