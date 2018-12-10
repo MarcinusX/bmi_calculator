@@ -17,3 +17,6 @@ Implementation of [Johny Vino](https://dribbble.com/johnyvino)'s [design](https:
 
 ## Available also on Medium!
 [See all related Medium posts](https://medium.com/flutter-community/marcin-sza%C5%82ek-bmi/home)
+
+## Questions?
+Contact me at marcin@fidev.io
