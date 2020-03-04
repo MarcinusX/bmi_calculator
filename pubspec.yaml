@@ -5,7 +5,7 @@ version: 1.0.0+1
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^0.5.5+1
+  flutter_svg: ^0.17.2
 
 
 dev_dependencies:
