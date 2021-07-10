@@ -14,10 +14,10 @@ class HeightPicker extends StatefulWidget {
   final ValueChanged<int> onChange;
 
   const HeightPicker(
-      {Key key,
-      this.height,
-      this.widgetHeight,
-      this.onChange,
+      {Key? key,
+      required this.height,
+      required this.widgetHeight,
+      required this.onChange,
       this.maxHeight = 190,
       this.minHeight = 145})
       : super(key: key);
@@ -29,8 +29,8 @@ class HeightPicker extends StatefulWidget {
 }
 
 class _HeightPickerState extends State<HeightPicker> {
-  double startDragYOffset;
-  int startDragHeight;
+  double startDragYOffset = 0.0;
+  int startDragHeight = 0;
 
   double get _pixelsPerUnit {
     return _drawingHeight / widget.totalUnits;
@@ -54,8 +54,9 @@ class _HeightPickerState extends State<HeightPicker> {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTapDown: _onTapDown,
-      onVerticalDragStart: _onDragStart,
+      onTapDown: (tapDownDetails) => _onTapDown(context, tapDownDetails),
+      onVerticalDragStart: (dragStartDetails) =>
+          _onDragStart(context, dragStartDetails),
       onVerticalDragUpdate: _onDragUpdate,
       child: Stack(
         children: <Widget>[
@@ -67,8 +68,8 @@ class _HeightPickerState extends State<HeightPicker> {
     );
   }
 
-  _onTapDown(TapDownDetails tapDownDetails) {
-    int height = _globalOffsetToHeight(tapDownDetails.globalPosition);
+  _onTapDown(BuildContext context, TapDownDetails tapDownDetails) {
+    int height = _globalOffsetToHeight(context, tapDownDetails.globalPosition);
     widget.onChange(_normalizeHeight(height));
   }
 
@@ -76,17 +77,18 @@ class _HeightPickerState extends State<HeightPicker> {
     return math.max(widget.minHeight, math.min(widget.maxHeight, height));
   }
 
-  int _globalOffsetToHeight(Offset globalOffset) {
-    RenderBox getBox = context.findRenderObject();
-    Offset localPosition = getBox.globalToLocal(globalOffset);
+  int _globalOffsetToHeight(BuildContext context, Offset globalOffset) {
+    RenderBox? getBox = context.findRenderObject() as RenderBox?;
+    Offset localPosition = getBox!.globalToLocal(globalOffset);
     double dy = localPosition.dy;
     dy = dy - marginTopAdapted(context) - labelsFontSize / 2;
     int height = widget.maxHeight - (dy ~/ _pixelsPerUnit);
     return height;
   }
 
-  _onDragStart(DragStartDetails dragStartDetails) {
-    int newHeight = _globalOffsetToHeight(dragStartDetails.globalPosition);
+  _onDragStart(BuildContext context, DragStartDetails dragStartDetails) {
+    int newHeight =
+        _globalOffsetToHeight(context, dragStartDetails.globalPosition);
     widget.onChange(newHeight);
     setState(() {
       startDragYOffset = dragStartDetails.globalPosition.dy;

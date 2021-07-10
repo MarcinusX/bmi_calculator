@@ -8,7 +8,7 @@ class WeightCard extends StatelessWidget {
   final int weight;
   final ValueChanged<int> onChanged;
 
-  const WeightCard({Key key, this.weight = 70, this.onChanged})
+  const WeightCard({Key? key, this.weight = 70, required this.onChanged})
       : super(key: key);
 
   @override
@@ -59,7 +59,7 @@ class WeightCard extends StatelessWidget {
 class WeightBackground extends StatelessWidget {
   final Widget child;
 
-  const WeightBackground({Key key, this.child}) : super(key: key);
+  const WeightBackground({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

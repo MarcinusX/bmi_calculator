@@ -7,7 +7,7 @@ class HeightCard extends StatelessWidget {
   final int height;
   final ValueChanged<int> onChanged;
 
-  const HeightCard({Key key, this.height = 170, this.onChanged})
+  const HeightCard({Key? key, this.height = 170, required this.onChanged})
       : super(key: key);
 
   @override

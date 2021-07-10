@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class HeightSlider extends StatelessWidget {
   final int height;
 
-  const HeightSlider({Key key, this.height}) : super(key: key);
+  const HeightSlider({Key? key, required this.height}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class HeightSlider extends StatelessWidget {
 class SliderLabel extends StatelessWidget {
   final int height;
 
-  const SliderLabel({Key key, this.height}) : super(key: key);
+  const SliderLabel({Key? key, required this.height}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

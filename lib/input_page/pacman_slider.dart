@@ -12,7 +12,10 @@ class PacmanSlider extends StatefulWidget {
   final VoidCallback onSubmit;
   final AnimationController submitAnimationController;
 
-  const PacmanSlider({Key key, this.onSubmit, this.submitAnimationController})
+  const PacmanSlider(
+      {Key? key,
+      required this.onSubmit,
+      required this.submitAnimationController})
       : super(key: key);
 
   @override
@@ -22,10 +25,10 @@ class PacmanSlider extends StatefulWidget {
 class _PacmanSliderState extends State<PacmanSlider>
     with TickerProviderStateMixin {
   double _pacmanPosition = 24.0;
-  Animation<BorderRadius> _bordersAnimation;
-  Animation<double> _submitWidthAnimation;
-  AnimationController pacmanMovementController;
-  Animation<double> pacmanAnimation;
+  late Animation<BorderRadius> _bordersAnimation;
+  late Animation<double> _submitWidthAnimation;
+  late AnimationController pacmanMovementController;
+  late Animation<double> pacmanAnimation;
 
   @override
   void initState() {
@@ -47,7 +50,8 @@ class _PacmanSliderState extends State<PacmanSlider>
     super.dispose();
   }
 
-  double get width => _submitWidthAnimation?.value ?? 0.0;
+  // double get width => _submitWidthAnimation?.value ?? 0.0;
+  double get width => _submitWidthAnimation.value;
 
   @override
   Widget build(BuildContext context) {
@@ -130,14 +134,14 @@ class _PacmanSliderState extends State<PacmanSlider>
         _pacmanPosition = animation.value;
       });
       if (animation.status == AnimationStatus.completed) {
-        _onPacmanSubmited();
+        _onPacmanSubmit();
       }
     });
     return animation;
   }
 
-  _onPacmanSubmited() {
-    widget?.onSubmit();
+  _onPacmanSubmit() {
+    widget.onSubmit();
     Future.delayed(Duration(seconds: 1), () => _resetPacman());
   }
 
@@ -189,7 +193,7 @@ class _AnimatedDotsState extends State<AnimatedDots>
   final int numberOfDots = 10;
   final double minOpacity = 0.1;
   final double maxOpacity = 0.5;
-  AnimationController hintAnimationController;
+  late AnimationController hintAnimationController;
 
   @override
   void initState() {
@@ -244,9 +248,9 @@ class _AnimatedDotsState extends State<AnimatedDots>
     return AnimatedBuilder(
       animation: animation,
       builder: (context, child) => Opacity(
-            opacity: animation.value,
-            child: child,
-          ),
+        opacity: animation.value,
+        child: child,
+      ),
       child: Dot(size: 9.0),
     );
   }
@@ -266,7 +270,7 @@ class _AnimatedDotsState extends State<AnimatedDots>
 }
 
 class SinusoidalAnimation extends Animatable<double> {
-  SinusoidalAnimation({this.min, this.max});
+  SinusoidalAnimation({required this.min, required this.max});
 
   final double min;
   final double max;
@@ -280,7 +284,7 @@ class SinusoidalAnimation extends Animatable<double> {
 class Dot extends StatelessWidget {
   final double size;
 
-  const Dot({Key key, @required this.size}) : super(key: key);
+  const Dot({Key? key, required this.size}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -12,14 +12,16 @@ import 'package:bmi_calculator/widget_utils.dart';
 import 'package:flutter/material.dart';
 
 class InputPage extends StatefulWidget {
+  InputPage({Key? key}) : super(key: key);
+
   @override
   InputPageState createState() {
-    return new InputPageState();
+    return InputPageState();
   }
 }
 
 class InputPageState extends State<InputPage> with TickerProviderStateMixin {
-  AnimationController _submitAnimationController;
+  late AnimationController _submitAnimationController;
   Gender gender = Gender.other;
   int height = 180;
   int weight = 70;
@@ -31,6 +33,7 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
       vsync: this,
       duration: Duration(seconds: 2),
     );
+
     _submitAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         _goToResultPage().then((_) => _submitAnimationController.reset());
@@ -85,9 +88,8 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
               ),
               Expanded(
                 child: WeightCard(
-                  weight: weight,
-                  onChanged: (val) => setState(() => weight = val),
-                ),
+                    weight: weight,
+                    onChanged: (val) => setState(() => weight = val)),
               ),
             ],
           ),
@@ -122,13 +124,15 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
   }
 
   _goToResultPage() async {
-    return Navigator.of(context).push(FadeRoute(
-      builder: (context) => ResultPage(
-            weight: weight,
-            height: height,
-            gender: gender,
-          ),
-    ));
+    return Navigator.of(context).push(
+      FadeRoute(
+        builder: (context) => ResultPage(
+          weight: weight,
+          height: height,
+          gender: gender,
+        ),
+      ),
+    );
   }
 }
 
@@ -137,7 +141,11 @@ class InputSummaryCard extends StatelessWidget {
   final int height;
   final int weight;
 
-  const InputSummaryCard({Key key, this.gender, this.height, this.weight})
+  const InputSummaryCard(
+      {Key? key,
+      required this.gender,
+      required this.height,
+      required this.weight})
       : super(key: key);
 
   @override
