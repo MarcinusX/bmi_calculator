@@ -8,7 +8,9 @@ class GenderIconTranslated extends StatelessWidget {
   final Gender gender;
   final bool isSelected;
 
-  const GenderIconTranslated({Key key, this.gender, this.isSelected = false}) : super(key: key);
+  const GenderIconTranslated(
+      {Key? key, required this.gender, this.isSelected = false})
+      : super(key: key);
 
   static final Map<Gender, String> _genderImages = {
     Gender.female: "images/gender_female.svg",
@@ -18,7 +20,7 @@ class GenderIconTranslated extends StatelessWidget {
 
   bool get _isOtherGender => gender == Gender.other;
 
-  String get _assetName => _genderImages[gender];
+  String get _assetName => _genderImages[gender]!;
 
   double _iconSize(BuildContext context) {
     return screenAwareSize(_isOtherGender ? 22.0 : 16.0, context);
@@ -41,7 +43,7 @@ class GenderIconTranslated extends StatelessWidget {
     );
 
     Widget rotatedIcon = Transform.rotate(
-      angle: -genderAngles[gender],
+      angle: -genderAngles[gender]!,
       child: icon,
     );
 
@@ -58,7 +60,7 @@ class GenderIconTranslated extends StatelessWidget {
 
     Widget rotatedIconWithALine = Transform.rotate(
       alignment: Alignment.bottomCenter,
-      angle: genderAngles[gender],
+      angle: genderAngles[gender]!,
       child: iconWithALine,
     );
 

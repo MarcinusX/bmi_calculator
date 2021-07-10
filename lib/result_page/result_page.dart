@@ -9,7 +9,11 @@ class ResultPage extends StatefulWidget {
   final int weight;
   final Gender gender;
 
-  const ResultPage({Key key, this.height, this.weight, this.gender})
+  const ResultPage(
+      {Key? key,
+      required this.height,
+      required this.weight,
+      required this.gender})
       : super(key: key);
 
   @override
@@ -60,20 +64,22 @@ class _ResultPageState extends State<ResultPage> {
             ),
           ),
           Container(
-              height: 52.0,
-              width: 80.0,
-              child: RaisedButton(
-                child: Icon(
-                  Icons.refresh,
-                  color: Colors.white,
-                  size: 28.0,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6.0),
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-                color: Theme.of(context).primaryColor,
-              )),
+            height: 52.0,
+            width: 80.0,
+            child: RawMaterialButton(
+              onPressed: () => Navigator.of(context).pop(),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),
+              ),
+              child: Icon(
+                Icons.refresh,
+                color: Colors.white,
+                size: 28.0,
+              ),
+              fillColor: Theme.of(context).primaryColor,
+
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 40.0),
             child: IconButton(
@@ -96,7 +102,11 @@ class ResultCard extends StatelessWidget {
   final double minWeight;
   final double maxWeight;
 
-  ResultCard({Key key, this.bmi, this.minWeight, this.maxWeight})
+  ResultCard(
+      {Key? key,
+      required this.bmi,
+      required this.minWeight,
+      required this.maxWeight})
       : super(key: key);
 
   @override

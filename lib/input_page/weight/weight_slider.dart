@@ -5,12 +5,12 @@ import 'package:flutter/rendering.dart';
 
 class WeightSlider extends StatelessWidget {
   WeightSlider({
-    Key key,
-    @required this.minValue,
-    @required this.maxValue,
-    @required this.value,
-    @required this.onChanged,
-    @required this.width,
+    Key? key,
+    required this.minValue,
+    required this.maxValue,
+    required this.value,
+    required this.onChanged,
+    required this.width,
   })  : scrollController = new ScrollController(
           initialScrollOffset: (value - minValue) * width / 3,
         ),
@@ -84,6 +84,7 @@ class WeightSlider extends StatelessWidget {
     return notification is UserScrollNotification &&
         notification.direction == ScrollDirection.idle &&
         scrollController.position.activity is! HoldScrollActivity;
+    //TODO: Solve this
   }
 
   _animateTo(int valueToSelect, {int durationMillis = 200}) {
