@@ -24,7 +24,7 @@ class PacmanSlider extends StatefulWidget {
 class _PacmanSliderState extends State<PacmanSlider>
     with TickerProviderStateMixin {
   double _pacmanPosition = 24.0;
-  late Animation<BorderRadius> _bordersAnimation;
+  late Animation<BorderRadius?> _bordersAnimation;
   late Animation<double> _submitWidthAnimation;
   late AnimationController pacmanMovementController;
   late Animation<double> pacmanAnimation;
@@ -42,7 +42,7 @@ class _PacmanSliderState extends State<PacmanSlider>
         parent: widget.submitAnimationController,
         curve: Interval(0.0, 0.07),
       ),
-    ) as Animation<BorderRadius>;
+    );
   }
 
   @override
