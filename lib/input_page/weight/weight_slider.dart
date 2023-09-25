@@ -5,16 +5,15 @@ import 'package:flutter/rendering.dart';
 
 class WeightSlider extends StatelessWidget {
   WeightSlider({
-    Key key,
-    @required this.minValue,
-    @required this.maxValue,
-    @required this.value,
-    @required this.onChanged,
-    @required this.width,
-  })  : scrollController = new ScrollController(
+    super.key,
+    required this.minValue,
+    required this.maxValue,
+    required this.value,
+    required this.onChanged,
+    required this.width,
+  }) : scrollController = new ScrollController(
           initialScrollOffset: (value - minValue) * width / 3,
-        ),
-        super(key: key);
+        );
 
   final int minValue;
   final int maxValue;

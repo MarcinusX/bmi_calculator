@@ -14,13 +14,12 @@ class HeightPicker extends StatefulWidget {
   final ValueChanged<int> onChange;
 
   const HeightPicker(
-      {Key key,
-      this.height,
-      this.widgetHeight,
-      this.onChange,
+      {super.key,
+      required this.height,
+      required this.widgetHeight,
+      required this.onChange,
       this.maxHeight = 190,
-      this.minHeight = 145})
-      : super(key: key);
+      this.minHeight = 145});
 
   int get totalUnits => maxHeight - minHeight;
 
@@ -29,8 +28,8 @@ class HeightPicker extends StatefulWidget {
 }
 
 class _HeightPickerState extends State<HeightPicker> {
-  double startDragYOffset;
-  int startDragHeight;
+  late double startDragYOffset;
+  late int startDragHeight;
 
   double get _pixelsPerUnit {
     return _drawingHeight / widget.totalUnits;
@@ -77,7 +76,7 @@ class _HeightPickerState extends State<HeightPicker> {
   }
 
   int _globalOffsetToHeight(Offset globalOffset) {
-    RenderBox getBox = context.findRenderObject();
+    RenderBox getBox = context.findRenderObject() as RenderBox;
     Offset localPosition = getBox.globalToLocal(globalOffset);
     double dy = localPosition.dy;
     dy = dy - marginTopAdapted(context) - labelsFontSize / 2;

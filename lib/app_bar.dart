@@ -8,7 +8,7 @@ class BmiAppBar extends StatelessWidget {
   static const String wavingHandEmoji = "\uD83D\uDC4B";
   static const String whiteSkinTone = "\uD83C\uDFFB";
 
-  const BmiAppBar({Key key, this.isInputPage = true}) : super(key: key);
+  const BmiAppBar({super.key, this.isInputPage = true});
 
   @override
   Widget build(BuildContext context) {

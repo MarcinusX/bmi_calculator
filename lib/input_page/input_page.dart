@@ -19,7 +19,7 @@ class InputPage extends StatefulWidget {
 }
 
 class InputPageState extends State<InputPage> with TickerProviderStateMixin {
-  AnimationController _submitAnimationController;
+  late AnimationController _submitAnimationController;
   Gender gender = Gender.other;
   int height = 180;
   int weight = 70;
@@ -124,10 +124,11 @@ class InputPageState extends State<InputPage> with TickerProviderStateMixin {
   _goToResultPage() async {
     return Navigator.of(context).push(FadeRoute(
       builder: (context) => ResultPage(
-            weight: weight,
-            height: height,
-            gender: gender,
-          ),
+        weight: weight,
+        height: height,
+        gender: gender,
+      ),
+      settings: null,
     ));
   }
 }
@@ -137,8 +138,11 @@ class InputSummaryCard extends StatelessWidget {
   final int height;
   final int weight;
 
-  const InputSummaryCard({Key key, this.gender, this.height, this.weight})
-      : super(key: key);
+  const InputSummaryCard(
+      {super.key,
+      required this.gender,
+      required this.height,
+      required this.weight});
 
   @override
   Widget build(BuildContext context) {

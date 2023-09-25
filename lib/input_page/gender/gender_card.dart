@@ -12,10 +12,10 @@ class GenderCard extends StatefulWidget {
   final ValueChanged<Gender> onChanged;
 
   const GenderCard({
-    Key key,
+    super.key,
     this.gender = Gender.other,
-    this.onChanged,
-  }) : super(key: key);
+    required this.onChanged,
+  });
 
   @override
   _GenderCardState createState() => _GenderCardState();
@@ -23,7 +23,7 @@ class GenderCard extends StatefulWidget {
 
 class _GenderCardState extends State<GenderCard>
     with SingleTickerProviderStateMixin {
-  AnimationController _arrowAnimationController;
+  late AnimationController _arrowAnimationController;
 
   @override
   void initState() {
@@ -109,7 +109,7 @@ class _GenderCardState extends State<GenderCard>
   void _setSelectedGender(Gender gender) {
     widget.onChanged(gender);
     _arrowAnimationController.animateTo(
-      genderAngles[gender],
+      genderAngles[gender]!,
       duration: Duration(milliseconds: 150),
     );
   }
@@ -118,7 +118,7 @@ class _GenderCardState extends State<GenderCard>
 class TapHandler extends StatelessWidget {
   final Function(Gender) onGenderTapped;
 
-  const TapHandler({Key key, this.onGenderTapped}) : super(key: key);
+  const TapHandler({super.key, required this.onGenderTapped});
 
   @override
   Widget build(BuildContext context) {
