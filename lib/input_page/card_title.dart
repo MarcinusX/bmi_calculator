@@ -14,9 +14,9 @@ const TextStyle _subtitleStyle = TextStyle(
 
 class CardTitle extends StatelessWidget {
   final String title;
-  final String subtitle;
+  final String? subtitle;
 
-  const CardTitle(this.title, {Key key, this.subtitle}) : super(key: key);
+  const CardTitle(this.title, {super.key, this.subtitle});
 
   @override
   Widget build(BuildContext context) {

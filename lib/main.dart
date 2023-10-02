@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'styles.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: Colors.white, //top bar color
